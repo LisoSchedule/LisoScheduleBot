@@ -2,7 +2,6 @@
 using Telegram.Bot.Types;
 using LisoScheduleBot.Dispatchers;
 using LisoScheduleBot.Interfaces;
-using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers;
 
@@ -10,13 +9,16 @@ public class BotUpdateHandler
 {
     private readonly UserStepDispatcher _userStepDispatcher;
     private readonly CallbackDispatcher _callbackDispatcher;
+    private readonly MessageHandler _messageHandler;
     private readonly IUserService _userService;
     private readonly ILogger<BotUpdateHandler> _logger;
 
-    public BotUpdateHandler(UserStepDispatcher userStepDispatcher, CallbackDispatcher callbackDispatcher, IUserService userService, ILogger<BotUpdateHandler> logger)
+    public BotUpdateHandler(UserStepDispatcher userStepDispatcher, CallbackDispatcher callbackDispatcher, 
+                            MessageHandler messageHandler, IUserService userService, ILogger<BotUpdateHandler> logger)
     {
         _userStepDispatcher = userStepDispatcher;
         _callbackDispatcher = callbackDispatcher;
+        _messageHandler = messageHandler;
         _userService = userService;
         _logger = logger;
     }
@@ -44,6 +46,7 @@ public class BotUpdateHandler
         var username = message.From!.Username ?? message.From.FirstName;
         var user = await _userService.GetOrCreateUser(message.From!.Id, username);
 
+        await _messageHandler.Handle(message, user);
         await _userStepDispatcher.Dispatch(message, user);
     }
 

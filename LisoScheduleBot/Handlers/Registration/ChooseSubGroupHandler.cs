@@ -1,7 +1,6 @@
 using Telegram.Bot.Types;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
-using LisoScheduleBot.Models;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 

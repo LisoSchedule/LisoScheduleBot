@@ -47,7 +47,9 @@ namespace LisoScheduleBot
             services.AddSingleton<IUserStepHandler, ChooseNicknameHandler>();
             services.AddSingleton<IUserStepHandler, ChooseSubGroupHandler>();
             services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
+            services.AddSingleton<IUserStepHandler, StartOverHandler>();
             services.AddSingleton<BotUpdateHandler>();
+            services.AddSingleton<MessageHandler>();
 
             // Repositories
             services.AddSingleton<JsonGroupRepository>();

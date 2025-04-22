@@ -7,6 +7,7 @@ namespace LisoScheduleBot.Enums;
 public enum UserStep
 {
     // Registration
+    StartOver,
     ChooseNickname,
     ChoosingNickname,
     ChooseGroup,

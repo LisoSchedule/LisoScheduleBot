@@ -6,30 +6,33 @@ using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers.Registration;
 
-public class ChooseGroupHandler : IUserStepHandler
+public class StartOverHandler : IUserStepHandler
 {
-    private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
 
-    public ChooseGroupHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public StartOverHandler(IMessageService messageService, IUserService userService)
     {
-        _groupService = groupService;
         _messageService = messageService;
         _userService = userService;
     }
 
-    public UserStep Step => UserStep.ChooseGroup;
+    public UserStep Step => UserStep.StartOver;
 
     public async Task Handle(Message message, User user)
     {
+        var tgUser = message.From;
+        var firstName = tgUser!.FirstName;
+        var username = tgUser.Username;
+
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Обери свою групу.",
-            replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
+            text: "Гаразд, давай спочатку.\n\n"+
+            "Бажаєш задати нікнейм?",
+            replyMarkup: KeyboardFactory.YesLaterNickname(firstName, username)
         );
 
-        user.Step = UserStep.ChooseGroup;
+        user.Step = UserStep.ChooseNickname;
         await _userService.SaveUser(user);
         //api request
     }

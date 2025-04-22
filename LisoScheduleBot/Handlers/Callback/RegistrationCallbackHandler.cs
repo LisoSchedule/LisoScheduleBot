@@ -1,7 +1,6 @@
 using Telegram.Bot.Types;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
-using LisoScheduleBot.Models;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
@@ -42,8 +41,6 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 break;
 
             case "later":
-                //var groups = api request
-
                 await _messageService.EditMessage(
                     chatId: user.ChatId,
                     messageId: callbackQuery.Message!.MessageId,

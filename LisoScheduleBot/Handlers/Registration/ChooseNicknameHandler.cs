@@ -26,8 +26,13 @@ public class ChooseNicknameHandler : IUserStepHandler
         var username = tgUser.Username;
 
         await _messageService.SendMessage(
-            chatId: user.ChatId, 
-            text: "Привіт! Бажаєш задати нікнейм?",
+           chatId: user.ChatId,
+           text: "Привіт!",
+           replyMarkup: KeyboardFactory.StartOver()
+        );
+        await _messageService.SendMessage(
+            chatId: user.ChatId,
+            text: "Бажаєш задати нікнейм?",
             replyMarkup: KeyboardFactory.YesLaterNickname(firstName, username)
         );
 

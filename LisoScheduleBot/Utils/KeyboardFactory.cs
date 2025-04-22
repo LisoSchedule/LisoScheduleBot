@@ -5,6 +5,17 @@ namespace LisoScheduleBot.Utils;
 
 public static class KeyboardFactory
 {
+    public static ReplyKeyboardMarkup StartOver()
+    {
+        return new ReplyKeyboardMarkup(new[]
+        {
+            new KeyboardButton[] { "Почати заново" }
+        })
+        {
+            ResizeKeyboard = true
+        };
+    }
+
     public static InlineKeyboardMarkup YesLaterNickname(string firstName, string? username = null)
     {
         var buttons = new List<InlineKeyboardButton[]>
@@ -30,7 +41,6 @@ public static class KeyboardFactory
 
         return new InlineKeyboardMarkup(buttons);
     }
-
 
     public static InlineKeyboardMarkup GroupsList(List<Group> groups)
     {

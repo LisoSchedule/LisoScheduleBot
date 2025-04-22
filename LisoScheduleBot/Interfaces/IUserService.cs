@@ -1,3 +1,4 @@
+using LisoScheduleBot.Enums;
 using LisoScheduleBot.Models;
 
 namespace LisoScheduleBot.Interfaces;
