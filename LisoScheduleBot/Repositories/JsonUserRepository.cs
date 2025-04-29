@@ -43,6 +43,18 @@ public class JsonUserRepository : IUserRepository
         await SaveChanges(users);
     }
 
+    public async Task Remove(int userId)
+    {
+        var users = await LoadUsers();
+        var existingUser = users.FirstOrDefault(u => u.UserId == userId);
+
+        if (existingUser != null)
+        {
+            users.Remove(existingUser);
+            await SaveChanges(users);
+        }
+    }
+
     private async Task<List<User>> LoadUsers()
     {
         if (!File.Exists(_filePath)) return new List<User>();

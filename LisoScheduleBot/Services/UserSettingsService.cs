@@ -1,3 +1,4 @@
+using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Repositories;
@@ -24,11 +25,14 @@ public class UserSettingsService : IUserSettingsService
 
         if (settings != null) return settings;
 
+        var allSettings = await _settingsRepository.GetAll();
+
         settings = new UserSettings
         {
+            SettingsId = GetNextUserSettignsId(allSettings),
             UserId = userId,
             ReceiveNotifications = true,
-            TimeBeforeClassToNotify = TimeSpan.FromMinutes(60),
+            TimeBeforeClassToNotify = TimeBeforeClass.OneHour,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -40,5 +44,15 @@ public class UserSettingsService : IUserSettingsService
     {
         settings.UpdatedAt = DateTime.UtcNow;
         await _settingsRepository.Save(settings);
+    }
+
+    public async Task RemoveUserSettings(int userId)
+    {
+        await _settingsRepository.Remove(userId);
+    }
+
+    private int GetNextUserSettignsId(List<UserSettings> settings)
+    {
+        return settings.Any() ? settings.Max(u => u.UserId) + 1 : 1;
     }
 }

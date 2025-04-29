@@ -29,5 +29,6 @@ public class User
     [JsonProperty("updated_at")]
     public DateTime UpdatedAt { get; set; }
 
+    [JsonIgnore]
     public UserSettings Settings { get; set; } = new UserSettings();
 }

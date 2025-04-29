@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
 
@@ -13,8 +14,8 @@ public class UserSettings
     [JsonProperty("receive_notifications")]
     public bool ReceiveNotifications { get; set; }
 
-    [JsonProperty("notification_time")]
-    public TimeSpan TimeBeforeClassToNotify { get; set; }
+    [JsonProperty("time_before_class_to_notify")]
+    public TimeBeforeClass TimeBeforeClassToNotify { get; set; }
 
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; }

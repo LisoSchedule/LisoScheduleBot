@@ -43,6 +43,18 @@ public class JsonUserSettingsRepository : IUserSettingsRepository
         await SaveChanges(allSettings);
     }
 
+    public async Task Remove(int userId)
+    {
+        var allSettings = await LoadUserSettings();
+        var existingSettings = allSettings.FirstOrDefault(s => s.UserId == userId);
+
+        if (existingSettings != null)
+        {
+            allSettings.Remove(existingSettings);
+            await SaveChanges(allSettings);
+        }
+    }
+
     private async Task<List<UserSettings>> LoadUserSettings()
     {
         if (!File.Exists(_filePath)) return new List<UserSettings>();

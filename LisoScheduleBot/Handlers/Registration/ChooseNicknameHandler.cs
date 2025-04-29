@@ -33,11 +33,10 @@ public class ChooseNicknameHandler : IUserStepHandler
         await _messageService.SendMessage(
             chatId: user.ChatId,
             text: "ЅажаЇш задати н≥кнейм?",
-            replyMarkup: KeyboardFactory.YesLaterNickname(firstName, username)
+            replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
 
         user.Step = UserStep.ChooseNickname;
         await _userService.SaveUser(user);
-        // api request
     }
 }

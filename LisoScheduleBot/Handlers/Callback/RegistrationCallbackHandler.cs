@@ -25,40 +25,40 @@ public class RegistrationCallbackHandler : ICallbackHandler
     {
         var callbackData = callbackQuery.Data!.Split(':');
         var message = callbackData[1];
+        var messageId = callbackQuery.Message!.MessageId;
+        var chatId = user.ChatId;
 
         switch (message)
         {
             case "yes":
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
+                    chatId: chatId,
+                    messageId: messageId,
                     text: "Введи бажаний нікнейм."
                 );
 
                 user.Step = UserStep.ChoosingNickname;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "later":
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
+                    chatId: chatId,
+                    messageId: messageId,
                     text: "Обери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
                 user.Step = UserStep.ChooseGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "nickname":
                 var nickname = callbackData[2];
 
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
+                    chatId: chatId,
+                    messageId: messageId,
                     text: "Чудово, нікнейм задано. Ти зможеш змінити його у налаштуваннях." +
                           "\n\nОбери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
@@ -67,17 +67,15 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 user.Nickname = nickname;
                 user.Step = UserStep.ChooseGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "group_name":
                 var groupName = callbackData[2];
                 var group = await _groupService.GetGroup(groupName);
-                // var groups = api request
 
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
+                    chatId: chatId,
+                    messageId: messageId,
                     text: "Обери свою підгрупу.",
                     replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
                 );
@@ -85,13 +83,12 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 user.GroupId = group.GroupId;
                 user.Step = UserStep.ChooseSubGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "group_id":
                 var groupId = int.Parse(callbackData[2]);
 
-                await _messageService.DeleteMessage(user.ChatId, callbackQuery.Message!.MessageId);
+                await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
                     text: "Тебе успішно зареєстровано!",
@@ -101,7 +98,6 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 user.Step = UserStep.MainMenu;
                 user.GroupId = groupId;
                 await _userService.SaveUser(user);
-                //api requests
                 break;
         }
     }

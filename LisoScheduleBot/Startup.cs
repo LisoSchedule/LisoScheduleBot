@@ -41,6 +41,7 @@ namespace LisoScheduleBot
 
             // Callback Handlers
             services.AddSingleton<ICallbackHandler, RegistrationCallbackHandler>();
+            services.AddSingleton<ICallbackHandler, SettingsCallbackHandler>();
 
             // Handlers
             services.AddSingleton<IUserStepHandler, ChooseGroupHandler>();
@@ -48,6 +49,10 @@ namespace LisoScheduleBot
             services.AddSingleton<IUserStepHandler, ChooseSubGroupHandler>();
             services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
             services.AddSingleton<IUserStepHandler, StartOverHandler>();
+            services.AddSingleton<IUserStepHandler, ChangeNicknameHandler>();
+            services.AddSingleton<IUserStepHandler, ChangeSettingsHandler>();
+            services.AddSingleton<IUserStepHandler, ChangingNicknameHandler>();
+            services.AddSingleton<IUserStepHandler, RemoveProfileHandler>();
             services.AddSingleton<BotUpdateHandler>();
             services.AddSingleton<MessageHandler>();
 
