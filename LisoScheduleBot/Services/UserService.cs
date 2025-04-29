@@ -19,23 +19,20 @@ public class UserService : IUserService
         return await _userRepository.GetAll();
     }
 
-    public async Task<User> GetOrCreateUser(long userId, string? username = null)
+    public async Task<User> GetOrCreateUser(long chatId, string? username = null)
     {
         //var user = api request
 
-        var user = await _userRepository.Get(userId);
+        var user = await _userRepository.Get(chatId);
 
-        if (user != null)
-        {
-            return user;
-        }
+        if (user != null) return user;
 
         var users = await _userRepository.GetAll();
 
         user = new User
         {
             UserId = GetNextUserId(users),
-            ChatId = userId,
+            ChatId = chatId,
             Username = username,
             Nickname = string.Empty,
             GroupId = -1,

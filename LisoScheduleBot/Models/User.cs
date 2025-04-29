@@ -1,5 +1,5 @@
-using LisoScheduleBot.Enums;
 using Newtonsoft.Json;
+using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
 
@@ -28,4 +28,6 @@ public class User
 
     [JsonProperty("updated_at")]
     public DateTime UpdatedAt { get; set; }
+
+    public UserSettings Settings { get; set; } = new UserSettings();
 }

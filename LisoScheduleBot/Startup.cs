@@ -54,12 +54,14 @@ namespace LisoScheduleBot
             // Repositories
             services.AddSingleton<JsonGroupRepository>();
             services.AddSingleton<JsonUserRepository>();
+            services.AddSingleton<JsonUserSettingsRepository>();
 
             // Services
             services.AddHostedService<BotService>();
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserSettingsService, UserSettingsService>();
         }
 
         public void Configure(WebApplication app)
