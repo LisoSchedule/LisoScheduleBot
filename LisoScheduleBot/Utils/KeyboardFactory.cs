@@ -30,7 +30,7 @@ public static class KeyboardFactory
 
         if (!string.IsNullOrEmpty(username))
         {
-            buttons.Add(new[] { InlineButton($"{username}", $"registration:nickname:{firstName}") });
+            buttons.Add(new[] { InlineButton($"{username}", $"registration:nickname:{username}") });
         }
 
         return new InlineKeyboardMarkup(buttons);
