@@ -6,5 +6,6 @@ namespace LisoScheduleBot.Enums;
 [JsonConverter(typeof(StringEnumConverter))]
 public enum GroupName
 {
+    None,
     CS31
 }

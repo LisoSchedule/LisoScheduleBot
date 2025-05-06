@@ -5,7 +5,7 @@ using LisoScheduleBot.Repositories;
 
 namespace LisoScheduleBot.Services;
 
-public class UserSettingsService : IUserSettingsService
+public class UserSettingsService : IService<UserSettings>
 {
     private readonly JsonUserSettingsRepository _settingsRepository;
 
@@ -14,12 +14,12 @@ public class UserSettingsService : IUserSettingsService
         _settingsRepository = settingsRepository;
     }
 
-    public async Task<List<UserSettings>> GetAllUserSettings()
+    public async Task<List<UserSettings>> GetAllEntities()
     {
         return await _settingsRepository.GetAll();
     }
 
-    public async Task<UserSettings> GetOrCreateUserSettings(int userId)
+    public async Task<UserSettings> GetOrCreateEntity(int userId)
     {
         var settings = await _settingsRepository.Get(userId);
 
@@ -40,13 +40,13 @@ public class UserSettingsService : IUserSettingsService
         return settings;
     }
 
-    public async Task SaveUserSettings(UserSettings settings)
+    public async Task SaveEntity(UserSettings settings)
     {
         settings.UpdatedAt = DateTime.UtcNow;
         await _settingsRepository.Save(settings);
     }
 
-    public async Task RemoveUserSettings(int userId)
+    public async Task RemoveEntity(int userId)
     {
         await _settingsRepository.Remove(userId);
     }

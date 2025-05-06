@@ -8,9 +8,9 @@ namespace LisoScheduleBot.Services;
 public class UserService : IUserService
 {
     private readonly JsonUserRepository _userRepository;
-    private readonly IUserSettingsService _settingsService;
+    private readonly IService<UserSettings> _settingsService;
 
-    public UserService(JsonUserRepository userRepository, IUserSettingsService settingsService)
+    public UserService(JsonUserRepository userRepository, IService<UserSettings> settingsService)
     {
         _userRepository = userRepository;
         _settingsService = settingsService;
@@ -27,7 +27,7 @@ public class UserService : IUserService
 
         if (user != null)
         {
-            user.Settings = await _settingsService.GetOrCreateUserSettings(user.UserId);
+            user.Settings = await _settingsService.GetOrCreateEntity(user.UserId);
             return user;
         }
 
@@ -45,7 +45,7 @@ public class UserService : IUserService
             UpdatedAt = DateTime.UtcNow
         };
 
-        user.Settings = await _settingsService.GetOrCreateUserSettings(user.UserId);
+        user.Settings = await _settingsService.GetOrCreateEntity(user.UserId);
 
         return user;
     }
@@ -54,12 +54,12 @@ public class UserService : IUserService
     {
         user.UpdatedAt = DateTime.UtcNow;
         await _userRepository.Save(user);
-        await _settingsService.SaveUserSettings(user.Settings);
+        await _settingsService.SaveEntity(user.Settings);
     }
 
     public async Task RemoveUser(User user)
     {
-        await _settingsService.RemoveUserSettings(user.UserId);
+        await _settingsService.RemoveEntity(user.UserId);
         await _userRepository.Remove(user.UserId);
     }
 

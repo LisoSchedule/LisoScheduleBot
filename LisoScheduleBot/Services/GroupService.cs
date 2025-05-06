@@ -1,8 +1,9 @@
+using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Repositories;
 
-public class GroupService : IGroupService
+public class GroupService : IService<Group>, IGroupService
 {
     private readonly JsonGroupRepository _groupRepository;
 
@@ -11,9 +12,40 @@ public class GroupService : IGroupService
         _groupRepository = groupRepository;
     }
 
-    public async Task<List<Group>> GetAllGroups()
+    public async Task<List<Group>> GetAllEntities()
     {
         return await _groupRepository.GetAll();
+    }
+
+    public async Task<Group> GetOrCreateEntity(int groupId)
+    {
+        var group = await _groupRepository.Get(groupId);
+
+        if (group != null) return group;
+
+        var allGroups = await _groupRepository.GetAll();
+
+        group = new Group
+        {
+            GroupId = GetNextGroupId(allGroups),
+            SubGroup = -1,
+            Name = GroupName.None,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        return group;
+    }
+
+    public async Task SaveEntity(Group group)
+    {
+        group.UpdatedAt = DateTime.UtcNow;
+        await _groupRepository.Save(group);
+    }
+
+    public async Task RemoveEntity(int groupId)
+    {
+        await _groupRepository.Remove(groupId);
     }
 
     public async Task<List<Group>> GetUniqueGroups()
@@ -54,9 +86,8 @@ public class GroupService : IGroupService
             .ToList();
     }
 
-    public async Task SaveGroup(Group group)
+    private int GetNextGroupId(List<Group> groups)
     {
-        group.UpdatedAt = DateTime.UtcNow;
-        await _groupRepository.Save(group);
+        return groups.Any() ? groups.Max(g => g.GroupId) + 1 : 1;
     }
 }
