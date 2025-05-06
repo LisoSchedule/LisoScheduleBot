@@ -34,7 +34,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Введи бажаний нікнейм."
+                    text: "Р’РІРµРґРё Р±Р°Р¶Р°РЅРёР№ РЅС–РєРЅРµР№Рј."
                 );
 
                 user.Step = UserStep.ChoosingNickname;
@@ -45,7 +45,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обери свою групу.",
+                    text: "РћР±РµСЂРё СЃРІРѕСЋ РіСЂСѓРїСѓ.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -59,8 +59,8 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Чудово, нікнейм задано. Ти зможеш змінити його у налаштуваннях." +
-                          "\n\nОбери свою групу.",
+                    text: "Р§СѓРґРѕРІРѕ, РЅС–РєРЅРµР№Рј Р·Р°РґР°РЅРѕ. РўРё Р·РјРѕР¶РµС€ Р·РјС–РЅРёС‚Рё Р№РѕРіРѕ Сѓ РЅР°Р»Р°С€С‚СѓРІР°РЅРЅСЏС…." +
+                        "\n\nРћР±РµСЂРё СЃРІРѕСЋ РіСЂСѓРїСѓ.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -76,7 +76,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обери свою підгрупу.",
+                    text: "РћР±РµСЂРё СЃРІРѕСЋ РїС–РґРіСЂСѓРїСѓ.",
                     replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
                 );
 
@@ -91,7 +91,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
-                    text: "Тебе успішно зареєстровано!",
+                    text: "РўРµР±Рµ СѓСЃРїС–С€РЅРѕ Р·Р°СЂРµС”СЃС‚СЂРѕРІР°РЅРѕ!",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 

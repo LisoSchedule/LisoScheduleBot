@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
 
@@ -11,7 +13,8 @@ public class Group
     public int SubGroup { get; set; }
 
     [JsonProperty("name")]
-    public string? Name { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public GroupName Name { get; set; }
 
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; }

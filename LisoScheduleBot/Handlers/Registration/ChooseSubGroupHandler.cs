@@ -23,17 +23,15 @@ public class ChooseSubGroupHandler : IUserStepHandler
 
     public async Task Handle(Message message, User user)
     {
-        //var groups = api request
         var group = await _groupService.GetGroup(user.GroupId);
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Обери свою підгрупу.",  
-            replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!))
+            text: "РћР±РµСЂРё СЃРІРѕСЋ РїС–РґРіСЂСѓРїСѓ.",
+            replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!.ToString()))
         );
 
         user.Step = UserStep.ChooseSubGroup;
         await _userService.SaveUser(user);
-        //api request
     }
 }

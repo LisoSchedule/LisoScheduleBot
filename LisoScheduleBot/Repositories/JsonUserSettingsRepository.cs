@@ -6,7 +6,7 @@ using LisoScheduleBot.Models;
 
 namespace LisoScheduleBot.Repositories;
 
-public class JsonUserSettingsRepository : IUserSettingsRepository
+public class JsonUserSettingsRepository : IRepository<UserSettings>
 {
     private readonly string _filePath;
     private readonly JsonSerializerSettings _settings;

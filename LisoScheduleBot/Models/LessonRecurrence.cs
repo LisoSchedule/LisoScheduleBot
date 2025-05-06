@@ -1,4 +1,5 @@
 using LisoScheduleBot.Enums;
+using LisoScheduleBot.Utils;
 using Newtonsoft.Json;
 
 namespace LisoScheduleBot.Models;
@@ -14,8 +15,9 @@ public class LessonRecurrence
     [JsonProperty("repeatability")]
     public RepeatPattern Repeatability { get; set; }
 
-    [JsonProperty("first_occurrence")]
-    public DateTime FirstOccurrence { get; set; }
+    [JsonProperty("start_date")]
+    [JsonConverter(typeof(StringDateOnlyConverter))]
+    public DateOnly StartDate { get; set; }
 
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; }

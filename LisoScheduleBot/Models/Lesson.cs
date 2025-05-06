@@ -1,5 +1,5 @@
-using LisoScheduleBot.Enums;
 using Newtonsoft.Json;
+using LisoScheduleBot.Utils;
 
 namespace LisoScheduleBot.Models;
 
@@ -14,14 +14,18 @@ public class Lesson
     [JsonProperty("teacher_id")]
     public int TeacherId { get; set; }
 
+    [JsonProperty("group_id")]
+    public int GroupId { get; set; }
+
     [JsonProperty("subject_id")]
     public int SubjectId { get; set; }
 
-    [JsonProperty("start_time")]
-    public DateTime StartTime { get; set; }
-
     [JsonProperty("duration")]
     public int Duration { get; set; }
+
+    [JsonProperty("start_time")]
+    [JsonConverter(typeof(StringTimeOnlyConverter))]
+    public TimeOnly StartTime { get; set; }
 
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; }

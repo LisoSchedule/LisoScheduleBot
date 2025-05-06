@@ -6,7 +6,7 @@ using LisoScheduleBot.Models;
 
 namespace LisoScheduleBot.Repositories;
 
-public class JsonGroupRepository : IGroupRepository
+public class JsonGroupRepository : IRepository<Group>
 {
     private readonly string _filePath;
     private readonly JsonSerializerSettings _settings;
@@ -44,6 +44,18 @@ public class JsonGroupRepository : IGroupRepository
 
         groups.Add(group);
         await SaveChanges(groups);
+    }
+
+    public async Task Remove(int groupId)
+    {
+        var groups = await LoadGroups();
+        var existingGroup = groups.FirstOrDefault(g => g.GroupId == groupId);
+
+        if (existingGroup != null)
+        {
+            groups.Remove(existingGroup);
+            await SaveChanges(groups);
+        }
     }
 
     private async Task<List<Group>> LoadGroups()

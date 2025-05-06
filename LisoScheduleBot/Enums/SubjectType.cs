@@ -6,6 +6,6 @@ namespace LisoScheduleBot.Enums;
 [JsonConverter(typeof(StringEnumConverter))]
 public enum SubjectType
 {
-    Lecruture,
+    Lecture,
     Practice
 }

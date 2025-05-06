@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
 
@@ -11,7 +12,7 @@ public class Teacher
     public string? FullName { get; set; }
 
     [JsonProperty("position")]
-    public string? Position { get; set; }
+    public TeacherPosition Position { get; set; }
 
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; }

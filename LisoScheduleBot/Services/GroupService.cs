@@ -29,7 +29,7 @@ public class GroupService : IGroupService
     {
         var groups = await _groupRepository.GetAll();
         return groups
-            .Where(g => g.Name == groupName)
+            .Where(g => g.Name.ToString() == groupName)
             .ToList();
     }
 
@@ -42,14 +42,14 @@ public class GroupService : IGroupService
     public async Task<Group> GetGroup(string groupName, int subGroup = 1)
     {
         var groups = await _groupRepository.GetAll();
-        return groups.FirstOrDefault(g => g.Name == groupName && g.SubGroup == subGroup) ?? new Group();
+        return groups.FirstOrDefault(g => g.Name.ToString() == groupName && g.SubGroup == subGroup) ?? new Group();
     }
 
     public async Task<List<int>> GetSubGroups(string groupName)
     {
         var groups = await _groupRepository.GetAll();
         return groups
-            .Where(g => g.Name == groupName)
+            .Where(g => g.Name.ToString() == groupName)
             .Select(g => g.SubGroup)
             .ToList();
     }

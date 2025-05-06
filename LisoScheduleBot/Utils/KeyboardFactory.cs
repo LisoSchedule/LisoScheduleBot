@@ -1,5 +1,6 @@
-﻿using LisoScheduleBot.Models;
-using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types.ReplyMarkups;
+using LisoScheduleBot.Enums;
+using LisoScheduleBot.Models;
 
 namespace LisoScheduleBot.Utils;
 
@@ -39,7 +40,7 @@ public static class KeyboardFactory
     public static InlineKeyboardMarkup GroupsList(List<Group> groups)
     {
         var buttons = groups
-            .Select(group => InlineButton(group.Name!, $"registration:group_name:{group.Name}"))
+            .Select(group => InlineButton(EnumConverter<GroupName>.EnumToString(group.Name!), $"registration:group_name:{group.Name}"))
             .ToArray();
 
         return new InlineKeyboardMarkup(buttons);
