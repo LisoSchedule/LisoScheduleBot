@@ -34,7 +34,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Введи бажаний нікнейм."
+                    text: $"{Emoji.WritingHand} Введи бажаний нікнейм."
                 );
 
                 user.Step = UserStep.ChoosingNickname;
@@ -45,7 +45,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обери свою групу.",
+                    text: $"{Emoji.Silhoutte} Обери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -59,8 +59,9 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Чудово, нікнейм задано. Ти зможеш змінити його у налаштуваннях." +
-                        "\n\nОбери свою групу.",
+                    text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
+                        $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
+                        $"{Emoji.Silhoutte} Обери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -76,7 +77,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обери свою підгрупу.",
+                    text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
                     replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
                 );
 
@@ -91,7 +92,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
-                    text: "Тебе успішно зареєстровано!",
+                    text: $"{Emoji.RacingFlag} Тебе успішно зареєстровано!",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 

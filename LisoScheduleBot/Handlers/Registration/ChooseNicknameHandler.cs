@@ -27,12 +27,12 @@ public class ChooseNicknameHandler : IUserStepHandler
 
         await _messageService.SendMessage(
            chatId: user.ChatId,
-           text: "Привіт!",
+           text: $"{Emoji.WavingHand} Привіт!",
            replyMarkup: KeyboardFactory.StartOver()
         );
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Бажаєш задати нікнейм?",
+            text: $"{Emoji.Pencil} Бажаєш задати нікнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
 

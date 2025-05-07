@@ -1,0 +1,25 @@
+namespace LisoScheduleBot.Utils;
+
+public static class Emoji
+{
+    public static string WritingHand { get; } = "\U0000270D";
+    public static string Silhoutte { get; } = "\U0001F464";
+    public static string DoubleSilhoutte { get; } = "\U0001F465";
+    public static string RacingFlag { get; } = "\U0001F3C1";
+    public static string Pencil { get; } = "\U0000270E";
+    public static string PhoneWithArrow { get; } = "\U0001F4F2";
+    public static string PersonWithTrash { get; } = "\U0001F6AE";
+    public static string CheckMark { get; } = "\U00002705";
+    public static string CrossMark { get; } = "\U0000274C";
+    public static string Gear { get; } = "\U00002699";
+    public static string WavingHand { get; } = "\U0001F44B";
+    public static string Refresh { get; } = "\U0001F504";
+    public static string ThumbsUp { get; } = "\U0001F44D";
+    public static string ThumbsDown { get; } = "\U0001F44E";
+    public static string GreenCircle { get; } = "\U0001F7E2";
+    public static string RedCircle { get; } = "\U0001F534";
+    public static string Clock { get; } = "\U000023F0";
+    public static string TrashCan { get; } = "\U0001F5D1";
+    public static string House { get; } = "\U0001F3E0";
+    public static string OpenBook { get; } = "\U0001F4D6";
+}

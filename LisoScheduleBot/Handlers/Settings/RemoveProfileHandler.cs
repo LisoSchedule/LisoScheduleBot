@@ -21,7 +21,7 @@ public class RemoveProfileHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Бажаєш видалити профіль?",
+            text: $"{Emoji.PersonWithTrash} Бажаєш видалити профіль?",
             replyMarkup: KeyboardFactory.RemoveCancel()
         );
     }

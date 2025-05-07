@@ -10,7 +10,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "Почати заново" }
+            new KeyboardButton[] { $"{Emoji.Refresh} Почати заново" }
         })
         {
             ResizeKeyboard = true
@@ -23,8 +23,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Так", "registration:yes"),
-                InlineButton("Пізніше", "registration:later")
+                InlineButton($"{Emoji.ThumbsUp} Так", "registration:yes"),
+                InlineButton($"{Emoji.ThumbsDown} Пізніше", "registration:later")
             },
             new[] { InlineButton($"{firstName}", $"registration:nickname:{firstName}") }
         };
@@ -59,7 +59,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "Розклад", "Налаштування" }
+            new KeyboardButton[] { $"{Emoji.OpenBook} Розклад", $"{Emoji.Gear} Налаштування" }
         })
         {
             ResizeKeyboard = true,
@@ -69,10 +69,10 @@ public static class KeyboardFactory
 
     public static InlineKeyboardMarkup Settings(UserSettings settings)
     {
-        var notifications = settings.ReceiveNotifications ? "\U0001F7E2" : "\U0001F534";
+        var notifications = settings.ReceiveNotifications ? Emoji.GreenCircle : Emoji.RedCircle;
         var buttons = new List<InlineKeyboardButton[]>
         {
-            new[] { InlineButton("\U0000270F Нікнейм", "settings:nickname") }
+            new[] { InlineButton($"{Emoji.Pencil} Нікнейм", "settings:nickname") }
         };
 
         if (settings.ReceiveNotifications)
@@ -80,7 +80,7 @@ public static class KeyboardFactory
             buttons.Add(new[]
             {
                 InlineButton($"{notifications} Сповіщення", "settings:notifications"),
-                InlineButton($"\U000023F0 За {(int)settings.TimeBeforeClassToNotify} хв. до Пар", "settings:time_before_class") 
+                InlineButton($"{Emoji.Clock} За {(int)settings.TimeBeforeClassToNotify} хв. до Пар", "settings:time_before_class") 
             });
         }
         else
@@ -88,8 +88,8 @@ public static class KeyboardFactory
             buttons.Add(new[] { InlineButton($"{notifications} Сповіщення", "settings:notifications") });
         }
 
-        buttons.Add(new[] { InlineButton("\U0001F5D1 Профіль", "settings:profile") });
-        buttons.Add(new[] { InlineButton("\U0001F3E0 Головне Меню", "settings:main_menu") });
+        buttons.Add(new[] { InlineButton($"{Emoji.TrashCan} Профіль", "settings:profile") });
+        buttons.Add(new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") });
 
         return new InlineKeyboardMarkup(buttons);
     }
@@ -100,8 +100,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Так", "settings:yes"),
-                InlineButton("Пізніше", "settings:later")
+                InlineButton($"{Emoji.ThumbsUp} Так", "settings:yes"),
+                InlineButton($"{Emoji.ThumbsDown} Пізніше", "settings:later")
             }
         });
     }
@@ -112,8 +112,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Видалити", "settings:remove"),
-                InlineButton("Скасувати", "settings:cancel")
+                InlineButton($"{Emoji.PersonWithTrash} Видалити", "settings:remove"),
+                InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
             }
         });
     }

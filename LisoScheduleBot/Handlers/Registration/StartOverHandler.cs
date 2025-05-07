@@ -27,13 +27,12 @@ public class StartOverHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Гаразд, давай спочатку.\n\n"+
-            "Бажаєш задати нікнейм?",
+            text: $"{Emoji.Refresh} Гаразд, давай спочатку.\n\n"+
+                $"{Emoji.Pencil} Бажаєш задати нікнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
 
         user.Step = UserStep.ChooseNickname;
         await _userService.SaveUser(user);
-        //api request
     }
 }

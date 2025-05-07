@@ -25,12 +25,11 @@ public class ChooseGroupHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Обери свою групу.",
+            text: $"{Emoji.Silhoutte} Обери свою групу.",
             replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
         );
 
         user.Step = UserStep.ChooseGroup;
         await _userService.SaveUser(user);
-        //api request
     }
 }

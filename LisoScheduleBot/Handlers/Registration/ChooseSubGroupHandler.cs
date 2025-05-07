@@ -27,7 +27,7 @@ public class ChooseSubGroupHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Обери свою підгрупу.",
+            text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
             replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!.ToString()))
         );
 

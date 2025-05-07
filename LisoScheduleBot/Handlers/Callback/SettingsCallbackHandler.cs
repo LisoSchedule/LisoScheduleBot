@@ -32,7 +32,9 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: user.ChatId,
                     messageId: messageId,
-                    text: user.Nickname == string.Empty ? "Бажаєш задати нікнейм?" : "Бажаєш змінити нікнейм?",
+                    text: user.Nickname == string.Empty
+                        ? $"{Emoji.Pencil} Бажаєш задати нікнейм?"
+                        : $"{Emoji.Pencil} Бажаєш змінити нікнейм?",
                     replyMarkup: KeyboardFactory.YesLater()
                 );
 
@@ -44,7 +46,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Введи бажаний нікнейм."
+                    text: $"{Emoji.WritingHand} Введи бажаний нікнейм."
                 );
 
                 user.Step = UserStep.ChangingNickname;
@@ -55,7 +57,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обирай, що забажаєш.",
+                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
 
@@ -69,7 +71,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обирай, що забажаєш.",
+                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
 
@@ -95,7 +97,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обирай, що забажаєш.",
+                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
 
@@ -106,7 +108,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Бажаєш видалити профіль?",
+                    text: $"{Emoji.PersonWithTrash} Бажаєш видалити профіль?",
                     replyMarkup: KeyboardFactory.RemoveCancel()
                 );
 
@@ -118,7 +120,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Профіль успішно видалено."
+                    text: $"{Emoji.CheckMark} Профіль успішно видалено."
                 );
 
                 await _userService.RemoveUser(user);
@@ -128,7 +130,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Обирай, що забажаєш.",
+                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
                 
@@ -140,7 +142,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: chatId,
-                    text: "Обери потрібну дію.",
+                    text: $"{Emoji.PhoneWithArrow} Обери потрібну дію.",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 

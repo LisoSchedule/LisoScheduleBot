@@ -21,7 +21,9 @@ public class ChangeNicknameHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: user.Nickname != null ? "ЅажаЇш задати н≥кнейм?" : "ЅажаЇш зм≥нити н≥кнейм?",
+            text: user.Nickname != null 
+                ? $"{Emoji.Pencil} ЅажаЇш задати н≥кнейм?"
+                : $"{Emoji.Pencil} ЅажаЇш зм≥нити н≥кнейм?",
             replyMarkup: KeyboardFactory.YesLater()
         );
     }

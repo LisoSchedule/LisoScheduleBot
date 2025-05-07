@@ -21,7 +21,7 @@ public class ChangeSettingsHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Îבטנאי, שמ חאבאזא÷ר.",
+            text: $"{Emoji.PhoneWithArrow} Îבטנאי, שמ חאבאזא÷ר.",
             replyMarkup: KeyboardFactory.Settings(user.Settings)
         );
     }
