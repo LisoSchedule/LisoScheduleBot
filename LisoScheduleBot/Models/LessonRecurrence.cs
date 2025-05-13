@@ -13,7 +13,7 @@ public class LessonRecurrence
     public int LessonId { get; set; }
 
     [JsonProperty("repeat_type")]
-    public RepeatPattern RepeatType { get; set; }
+    public RepeatType RepeatType { get; set; }
 
     [JsonProperty("repeat_value")]
     public int RepeatValue { get; set; }

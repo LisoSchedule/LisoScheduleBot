@@ -4,25 +4,25 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Settings;
+namespace LisoScheduleBot.Handlers.Schedule;
 
-public class ChangeSettingsHandler : IUserStepHandler
+public class ScheduleNextWeekHandler : IUserStepHandler
 {
     private readonly IMessageService _messageService;
 
-    public ChangeSettingsHandler(IMessageService messageService)
+    public ScheduleNextWeekHandler(IMessageService messageService)
     {
         _messageService = messageService;
     }
 
-    public UserStep Step => UserStep.ChangeSettings;
+    public UserStep Step => UserStep.ScheduleNextWeek;
 
     public async Task Handle(Message message, User user)
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
-            replyMarkup: KeyboardFactory.Settings(user.Settings)
+            text: $"{Emoji.Calendar} Обери день.",
+            replyMarkup: KeyboardFactory.NextWeekButtons()
         );
     }
 }

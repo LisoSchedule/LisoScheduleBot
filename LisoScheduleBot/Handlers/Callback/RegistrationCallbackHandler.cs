@@ -12,7 +12,8 @@ public class RegistrationCallbackHandler : ICallbackHandler
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
 
-    public RegistrationCallbackHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public RegistrationCallbackHandler(IGroupService groupService, IMessageService messageService, 
+        IUserService userService)
     {
         _groupService = groupService;
         _messageService = messageService;

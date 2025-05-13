@@ -28,8 +28,5 @@ public class ChooseGroupHandler : IUserStepHandler
             text: $"{Emoji.Silhoutte} Обери свою групу.",
             replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
         );
-
-        user.Step = UserStep.ChooseGroup;
-        await _userService.SaveUser(user);
     }
 }

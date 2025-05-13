@@ -6,5 +6,6 @@
         public string? Teacher { get; set; }
         public string? Classroom { get; set; }
         public TimeOnly StartTime { get; set; }
+        public int Duration { get; set; }
     }
 }

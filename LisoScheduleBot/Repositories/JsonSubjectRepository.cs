@@ -37,10 +37,7 @@ public class JsonSubjectRepository : IRepository<Subject>
         var subjects = await LoadSubjects();
         var existingSubject = subjects.FirstOrDefault(s => s.SubjectId == subject.SubjectId);
 
-        if (existingSubject != null)
-        {
-            subjects.Remove(existingSubject);
-        }
+        if (existingSubject != null) subjects.Remove(existingSubject);
 
         subjects.Add(subject);
         await SaveChanges(subjects);
@@ -62,20 +59,13 @@ public class JsonSubjectRepository : IRepository<Subject>
     {
         if (!File.Exists(_filePath)) return new List<Subject>();
 
-        using (var reader = new StreamReader(_filePath))
-        {
-            var json = await reader.ReadToEndAsync();
-            return JsonConvert.DeserializeObject<List<Subject>>(json, _settings) ?? new List<Subject>();
-        }
+        var json = await File.ReadAllTextAsync(_filePath);
+        return JsonConvert.DeserializeObject<List<Subject>>(json, _settings) ?? new List<Subject>();
     }
 
     private async Task SaveChanges(List<Subject> subjects)
     {
         var json = JsonConvert.SerializeObject(subjects, _settings);
-        using (var writer = new StreamWriter(_filePath))
-        {
-            await writer.WriteAsync(json);
-        }
+        await File.WriteAllTextAsync(_filePath, json);
     }
-
 }

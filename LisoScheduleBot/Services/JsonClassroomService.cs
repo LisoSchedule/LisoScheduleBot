@@ -1,15 +1,14 @@
-using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Repositories;
 
 namespace LisoScheduleBot.Services;
 
-public class ClassroomService : IService<Classroom>
+public class JsonClassroomService : IService<Classroom>
 {
     private readonly JsonClassroomRepository _classroomRepository;
 
-    public ClassroomService(JsonClassroomRepository classroomRepository)
+    public JsonClassroomService(JsonClassroomRepository classroomRepository)
     {
         _classroomRepository = classroomRepository;
     }

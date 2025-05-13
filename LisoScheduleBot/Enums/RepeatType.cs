@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace LisoScheduleBot.Enums;
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum RepeatPattern
+public enum RepeatType
 {
     None,
     Daily,

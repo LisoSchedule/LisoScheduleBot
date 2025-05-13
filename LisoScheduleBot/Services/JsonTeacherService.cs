@@ -5,11 +5,11 @@ using LisoScheduleBot.Repositories;
 
 namespace LisoScheduleBot.Services;
 
-public class TeacherService : IService<Teacher>
+public class JsonTeacherService : IService<Teacher>
 {
     private readonly JsonTeacherRepository _teacherRepository;
 
-    public TeacherService(JsonTeacherRepository teacherRepository)
+    public JsonTeacherService(JsonTeacherRepository teacherRepository)
     {
         _teacherRepository = teacherRepository;
     }

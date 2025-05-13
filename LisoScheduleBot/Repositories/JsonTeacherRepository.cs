@@ -38,10 +38,7 @@ public class JsonTeacherRepository : IRepository<Teacher>
         var teachers = await LoadTeachers();
         var existingTeacher = teachers.FirstOrDefault(t => t.TeacherId == teacher.TeacherId);
 
-        if (existingTeacher != null)
-        {
-            teachers.Remove(existingTeacher);
-        }
+        if (existingTeacher != null) teachers.Remove(existingTeacher);
 
         teachers.Add(teacher);
         await SaveChanges(teachers);

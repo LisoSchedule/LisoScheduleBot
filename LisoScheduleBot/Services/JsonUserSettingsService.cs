@@ -5,11 +5,11 @@ using LisoScheduleBot.Repositories;
 
 namespace LisoScheduleBot.Services;
 
-public class UserSettingsService : IService<UserSettings>
+public class JsonUserSettingsService : IService<UserSettings>
 {
     private readonly JsonUserSettingsRepository _settingsRepository;
 
-    public UserSettingsService(JsonUserSettingsRepository settingsRepository)
+    public JsonUserSettingsService(JsonUserSettingsRepository settingsRepository)
     {
         _settingsRepository = settingsRepository;
     }

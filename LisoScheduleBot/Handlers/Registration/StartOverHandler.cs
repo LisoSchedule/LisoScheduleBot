@@ -28,7 +28,7 @@ public class StartOverHandler : IUserStepHandler
         await _messageService.SendMessage(
             chatId: user.ChatId,
             text: $"{Emoji.Refresh} Гаразд, давай спочатку.\n\n"+
-                $"{Emoji.Pencil} Бажаєш задати нікнейм?",
+                $"{Emoji.Pen} Бажаєш задати нікнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
 

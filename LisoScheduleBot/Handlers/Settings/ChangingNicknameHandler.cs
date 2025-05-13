@@ -4,7 +4,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
 public class ChangingNicknameHandler : IUserStepHandler
 {

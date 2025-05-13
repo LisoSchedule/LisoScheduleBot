@@ -37,10 +37,7 @@ public class JsonGroupRepository : IRepository<Group>
         var groups = await LoadGroups();
         var existingGroup = groups.FirstOrDefault(g => g.GroupId == group.GroupId);
 
-        if (existingGroup != null)
-        {
-            groups.Remove(existingGroup);
-        }
+        if (existingGroup != null) groups.Remove(existingGroup);
 
         groups.Add(group);
         await SaveChanges(groups);

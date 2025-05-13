@@ -5,11 +5,11 @@ using LisoScheduleBot.Repositories;
 
 namespace LisoScheduleBot.Services;
 
-public class LessonRecurrenceService : IService<LessonRecurrence>
+public class JsonLessonRecurrenceService : IService<LessonRecurrence>
 {
     private readonly JsonLessonRecurrenceRepository _recurrenceRepository;
 
-    public LessonRecurrenceService(JsonLessonRecurrenceRepository recurrenceRepository)
+    public JsonLessonRecurrenceService(JsonLessonRecurrenceRepository recurrenceRepository)
     {
         _recurrenceRepository = recurrenceRepository;
     }
@@ -31,7 +31,8 @@ public class LessonRecurrenceService : IService<LessonRecurrence>
         {
             RecurrenceId = GetNextRecurrenceId(allRecurrences),
             LessonId = -1,
-            Repeatability = RepeatPattern.None,
+            RepeatType = RepeatType.None,
+            RepeatValue = -1,
             StartDate = new DateOnly(),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow

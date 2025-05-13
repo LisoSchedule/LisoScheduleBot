@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using LisoScheduleBot.Config;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
@@ -27,8 +26,8 @@ public class JsonClassroomRepository : IRepository<Classroom>
 
     public async Task<Classroom?> Get(int classroomId)
     {
-        var users = await LoadClassrooms();
-        return users.FirstOrDefault(c => c.ClassroomId == classroomId);
+        var classrooms = await LoadClassrooms();
+        return classrooms.FirstOrDefault(c => c.ClassroomId == classroomId);
     }
 
     public async Task Save(Classroom classroom)
@@ -57,7 +56,7 @@ public class JsonClassroomRepository : IRepository<Classroom>
     private async Task<List<Classroom>> LoadClassrooms()
     {
         if (!File.Exists(_filePath)) return new List<Classroom>();
-        
+
         var json = await File.ReadAllTextAsync(_filePath);
         return JsonConvert.DeserializeObject<List<Classroom>>(json, _settings) ?? new List<Classroom>();
     }

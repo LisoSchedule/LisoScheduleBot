@@ -30,8 +30,5 @@ public class ChooseSubGroupHandler : IUserStepHandler
             text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
             replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!.ToString()))
         );
-
-        user.Step = UserStep.ChooseSubGroup;
-        await _userService.SaveUser(user);
     }
 }

@@ -32,11 +32,8 @@ public class ChooseNicknameHandler : IUserStepHandler
         );
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.Pencil} ЅажаЇш задати н≥кнейм?",
+            text: $"{Emoji.Pen} ЅажаЇш задати н≥кнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
-
-        user.Step = UserStep.ChooseNickname;
-        await _userService.SaveUser(user);
     }
 }

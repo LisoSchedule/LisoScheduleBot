@@ -41,10 +41,7 @@ public class JsonLessonRecurrenceRepository : IRepository<LessonRecurrence>
         var recurrences = await LoadRecurrences();
         var existingRecurrence = recurrences.FirstOrDefault(r => r.RecurrenceId == recurrence.RecurrenceId);
 
-        if (existingRecurrence != null)
-        {
-            recurrences.Remove(existingRecurrence);
-        }
+        if (existingRecurrence != null) recurrences.Remove(existingRecurrence);
 
         recurrences.Add(recurrence);
         await SaveChanges(recurrences);

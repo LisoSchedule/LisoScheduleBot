@@ -1,9 +1,8 @@
 ﻿using LisoScheduleBot.Models;
 
-namespace LisoScheduleBot.Interfaces
+namespace LisoScheduleBot.Interfaces;
+
+public interface IScheduleService
 {
-    public interface IScheduleService
-    {
-        Task<List<ScheduleItem>> GetScheduleDetailsByDate(DateOnly date);
-    }
+    Task<List<ScheduleItem>> GetScheduleItemsByDate(DateOnly date, User user);
 }

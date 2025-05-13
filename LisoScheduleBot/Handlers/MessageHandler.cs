@@ -1,8 +1,8 @@
 using Telegram.Bot.Types;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
-using User = LisoScheduleBot.Models.User;
 using LisoScheduleBot.Utils;
+using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers;
 
@@ -33,5 +33,12 @@ public class MessageHandler
             user.Step = UserStep.ChangeSettings;
             await _userService.SaveUser(user);
         }
+        else if (message.Text == $"{Emoji.OpenBook} Розклад")
+        {
+            if (user.Step < UserStep.MainMenu) return;
+
+            user.Step = UserStep.ChooseSchedule;
+            await _userService.SaveUser(user);
+        }    
     }
 }

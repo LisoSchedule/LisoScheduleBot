@@ -6,7 +6,7 @@ public static class Emoji
     public static string Silhoutte { get; } = "\U0001F464";
     public static string DoubleSilhoutte { get; } = "\U0001F465";
     public static string RacingFlag { get; } = "\U0001F3C1";
-    public static string Pencil { get; } = "\U0000270E";
+    public static string Pen { get; } = "\U0001F58A";
     public static string PhoneWithArrow { get; } = "\U0001F4F2";
     public static string PersonWithTrash { get; } = "\U0001F6AE";
     public static string CheckMark { get; } = "\U00002705";
@@ -22,4 +22,8 @@ public static class Emoji
     public static string TrashCan { get; } = "\U0001F5D1";
     public static string House { get; } = "\U0001F3E0";
     public static string OpenBook { get; } = "\U0001F4D6";
+    public static string ArrowLeft { get; } = "\U00002B05";
+    public static string ArrowRight { get; } = "\U000027A1";
+    public static string Calendar { get; } = "\U0001F4C6";
+    public static string Date { get; } = "\U0001F4C5";
 }

@@ -41,10 +41,7 @@ public class JsonLessonRepository : IRepository<Lesson>
         var lessons = await LoadLessons();
         var existingLesson = lessons.FirstOrDefault(l => l.LessonId == lesson.LessonId);
 
-        if (existingLesson != null)
-        {
-            lessons.Remove(existingLesson);
-        }
+        if (existingLesson != null) lessons.Remove(existingLesson);
 
         lessons.Add(lesson);
         await SaveChanges(lessons);

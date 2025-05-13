@@ -3,11 +3,11 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Repositories;
 
-public class GroupService : IService<Group>, IGroupService
+public class JsonGroupService : IService<Group>, IGroupService
 {
     private readonly JsonGroupRepository _groupRepository;
 
-    public GroupService(JsonGroupRepository groupRepository)
+    public JsonGroupService(JsonGroupRepository groupRepository)
     {
         _groupRepository = groupRepository;
     }

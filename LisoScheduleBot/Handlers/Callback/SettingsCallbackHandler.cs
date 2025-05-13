@@ -33,8 +33,8 @@ public class SettingsCallbackHandler : ICallbackHandler
                     chatId: user.ChatId,
                     messageId: messageId,
                     text: user.Nickname == string.Empty
-                        ? $"{Emoji.Pencil} ЅажаЇш задати н≥кнейм?"
-                        : $"{Emoji.Pencil} ЅажаЇш зм≥нити н≥кнейм?",
+                        ? $"{Emoji.Pen} ЅажаЇш задати н≥кнейм?"
+                        : $"{Emoji.Pen} ЅажаЇш зм≥нити н≥кнейм?",
                     replyMarkup: KeyboardFactory.YesLater()
                 );
 
