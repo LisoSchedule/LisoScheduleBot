@@ -2,5 +2,7 @@
 
 public enum EnvKeys
 {
-    BOT_TOKEN
+    BOT_TOKEN,
+    USERS_JSON,
+    GROUPS_JSON
 }

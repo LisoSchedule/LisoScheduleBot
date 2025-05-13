@@ -1,22 +1,12 @@
-using LisoScheduleBot.Config;
-using LisoScheduleBot.Handlers;
-using LisoScheduleBot.Services;
+using LisoScheduleBot;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddLogging(logging =>
-{
-    logging.ClearProviders();
-    logging.AddConsole();
-});
-
-var appConfig = new AppConfig();
-builder.Services.AddSingleton(appConfig);
-
-builder.Services.AddSingleton<BotUpdateHandler>();
-builder.Services.AddHostedService<BotService>();
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Bot is running...");
+startup.Configure(app);
+
 app.Run();
