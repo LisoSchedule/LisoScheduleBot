@@ -14,5 +14,11 @@ public enum UserStep
     ChooseSubGroup,
 
     // Main Menu
-    MainMenu
+    MainMenu,
+
+    //Settings
+    ChangeSettings,
+    ChangeNickname,
+    ChangingNickname,
+    RemoveProfile
 }

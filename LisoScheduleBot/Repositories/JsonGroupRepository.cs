@@ -48,10 +48,7 @@ public class JsonGroupRepository : IGroupRepository
 
     private async Task<List<Group>> LoadGroups()
     {
-        if (!File.Exists(_filePath))
-        {
-            return new List<Group>();
-        }
+        if (!File.Exists(_filePath)) return new List<Group>();
 
         var json = await File.ReadAllTextAsync(_filePath);
         return JsonConvert.DeserializeObject<List<Group>>(json, _settings) ?? new List<Group>();

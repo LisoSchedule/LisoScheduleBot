@@ -16,11 +16,20 @@ public class MessageHandler
 
     public async Task Handle(Message message, User user)
     {
-        if (message.Text == "������ ������")
+        if (message.Text == "Ïî÷àòè çàíîâî")
         {
+            if (user.Step >= UserStep.MainMenu) return;
+
             user.Nickname = string.Empty;
             user.GroupId = -1;
             user.Step = UserStep.StartOver;
+            await _userService.SaveUser(user);
+        }
+        else if (message.Text == "Íàëàøòóâàííÿ")
+        {
+            if (user.Step < UserStep.MainMenu) return;
+
+            user.Step = UserStep.ChangeSettings;
             await _userService.SaveUser(user);
         }
     }

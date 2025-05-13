@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using LisoScheduleBot.Config;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace LisoScheduleBot.Repositories;
 
@@ -26,10 +26,10 @@ public class JsonUserRepository : IUserRepository
         return await LoadUsers();
     }
 
-    public async Task<User?> Get(long userId)
+    public async Task<User?> Get(long chatId)
     {
         var users = await LoadUsers();
-        return users.FirstOrDefault(u => u.ChatId == userId);
+        return users.FirstOrDefault(u => u.ChatId == chatId);
     }
 
     public async Task Save(User user)
@@ -37,22 +37,28 @@ public class JsonUserRepository : IUserRepository
         var users = await LoadUsers();
         var existingUser = users.FirstOrDefault(u => u.ChatId == user.ChatId);
 
-        if (existingUser != null)
-        {
-            users.Remove(existingUser);
-        }
+        if (existingUser != null) users.Remove(existingUser);
 
         users.Add(user);
         await SaveChanges(users);
     }
 
+    public async Task Remove(int userId)
+    {
+        var users = await LoadUsers();
+        var existingUser = users.FirstOrDefault(u => u.UserId == userId);
+
+        if (existingUser != null)
+        {
+            users.Remove(existingUser);
+            await SaveChanges(users);
+        }
+    }
+
     private async Task<List<User>> LoadUsers()
     {
-        if (!File.Exists(_filePath))
-        {
-            return new List<User>();
-        }
-
+        if (!File.Exists(_filePath)) return new List<User>();
+        
         var json = await File.ReadAllTextAsync(_filePath);
         return JsonConvert.DeserializeObject<List<User>>(json, _settings) ?? new List<User>();
     }

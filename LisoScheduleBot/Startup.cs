@@ -41,6 +41,7 @@ namespace LisoScheduleBot
 
             // Callback Handlers
             services.AddSingleton<ICallbackHandler, RegistrationCallbackHandler>();
+            services.AddSingleton<ICallbackHandler, SettingsCallbackHandler>();
 
             // Handlers
             services.AddSingleton<IUserStepHandler, ChooseGroupHandler>();
@@ -48,18 +49,24 @@ namespace LisoScheduleBot
             services.AddSingleton<IUserStepHandler, ChooseSubGroupHandler>();
             services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
             services.AddSingleton<IUserStepHandler, StartOverHandler>();
+            services.AddSingleton<IUserStepHandler, ChangeNicknameHandler>();
+            services.AddSingleton<IUserStepHandler, ChangeSettingsHandler>();
+            services.AddSingleton<IUserStepHandler, ChangingNicknameHandler>();
+            services.AddSingleton<IUserStepHandler, RemoveProfileHandler>();
             services.AddSingleton<BotUpdateHandler>();
             services.AddSingleton<MessageHandler>();
 
             // Repositories
             services.AddSingleton<JsonGroupRepository>();
             services.AddSingleton<JsonUserRepository>();
+            services.AddSingleton<JsonUserSettingsRepository>();
 
             // Services
             services.AddHostedService<BotService>();
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserSettingsService, UserSettingsService>();
         }
 
         public void Configure(WebApplication app)

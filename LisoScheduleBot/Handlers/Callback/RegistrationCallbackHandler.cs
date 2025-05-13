@@ -25,83 +25,79 @@ public class RegistrationCallbackHandler : ICallbackHandler
     {
         var callbackData = callbackQuery.Data!.Split(':');
         var message = callbackData[1];
+        var messageId = callbackQuery.Message!.MessageId;
+        var chatId = user.ChatId;
 
         switch (message)
         {
             case "yes":
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
-                    text: "Введи бажаний нікнейм."
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: "Г‚ГўГҐГ¤ГЁ ГЎГ Г¦Г Г­ГЁГ© Г­ВіГЄГ­ГҐГ©Г¬."
                 );
 
                 user.Step = UserStep.ChoosingNickname;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "later":
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
-                    text: "Обери свою групу.",
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: "ГЋГЎГҐГ°ГЁ Г±ГўГ®Гѕ ГЈГ°ГіГЇГі.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
                 user.Step = UserStep.ChooseGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "nickname":
                 var nickname = callbackData[2];
 
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
-                    text: "Чудово, нікнейм задано. Ти зможеш змінити його у налаштуваннях." +
-                          "\n\nОбери свою групу.",
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: "Г—ГіГ¤Г®ГўГ®, Г­ВіГЄГ­ГҐГ©Г¬ Г§Г Г¤Г Г­Г®. Г’ГЁ Г§Г¬Г®Г¦ГҐГё Г§Г¬ВіГ­ГЁГІГЁ Г©Г®ГЈГ® Гі Г­Г Г«Г ГёГІГіГўГ Г­Г­ГїГµ." +
+                          "\n\nГЋГЎГҐГ°ГЁ Г±ГўГ®Гѕ ГЈГ°ГіГЇГі.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
                 user.Nickname = nickname;
                 user.Step = UserStep.ChooseGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "group_name":
                 var groupName = callbackData[2];
                 var group = await _groupService.GetGroup(groupName);
-                // var groups = api request
 
                 await _messageService.EditMessage(
-                    chatId: user.ChatId,
-                    messageId: callbackQuery.Message!.MessageId,
-                    text: "Обери свою підгрупу.",
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: "ГЋГЎГҐГ°ГЁ Г±ГўГ®Гѕ ГЇВіГ¤ГЈГ°ГіГЇГі.",
                     replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
                 );
 
                 user.GroupId = group.GroupId;
                 user.Step = UserStep.ChooseSubGroup;
                 await _userService.SaveUser(user);
-                //api request
                 break;
 
             case "group_id":
                 var groupId = int.Parse(callbackData[2]);
 
-                await _messageService.DeleteMessage(user.ChatId, callbackQuery.Message!.MessageId);
+                await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
-                    text: "Тебе успішно зареєстровано!",
+                    text: "Г’ГҐГЎГҐ ГіГ±ГЇВіГёГ­Г® Г§Г Г°ГҐВєГ±ГІГ°Г®ГўГ Г­Г®!",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 
                 user.Step = UserStep.MainMenu;
                 user.GroupId = groupId;
                 await _userService.SaveUser(user);
-                //api requests
                 break;
         }
     }

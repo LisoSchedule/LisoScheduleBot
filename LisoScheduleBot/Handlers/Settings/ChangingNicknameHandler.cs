@@ -6,34 +6,32 @@ using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers.Registration;
 
-public class StartOverHandler : IUserStepHandler
+public class ChangingNicknameHandler : IUserStepHandler
 {
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
 
-    public StartOverHandler(IMessageService messageService, IUserService userService)
+    public ChangingNicknameHandler(IMessageService messageService, IUserService userService)
     {
         _messageService = messageService;
         _userService = userService;
     }
 
-    public UserStep Step => UserStep.StartOver;
+    public UserStep Step => UserStep.ChangingNickname;
 
     public async Task Handle(Message message, User user)
     {
-        var tgUser = message.From;
-        var firstName = tgUser!.FirstName;
-        var username = tgUser.Username;
+        var nickname = message.Text;
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "ГѓГ Г°Г Г§Г¤, Г¤Г ГўГ Г© Г±ГЇГ®Г·Г ГІГЄГі.\n\n"+
-            "ГЃГ Г¦Г ВєГё Г§Г Г¤Г ГІГЁ Г­ВіГЄГ­ГҐГ©Г¬?",
-            replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
+            text: "Чудово, нікнейм задано.\n\n" +
+            "Обирай, що забажаєш.",
+            replyMarkup: KeyboardFactory.Settings(user.Settings)
         );
 
-        user.Step = UserStep.ChooseNickname;
+        user.Nickname = nickname;
+        user.Step = UserStep.ChangeSettings;
         await _userService.SaveUser(user);
-        //api request
     }
 }
