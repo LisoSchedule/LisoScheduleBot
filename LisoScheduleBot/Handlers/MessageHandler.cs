@@ -16,7 +16,7 @@ public class MessageHandler
 
     public async Task Handle(Message message, User user)
     {
-        if (message.Text == "Почати заново")
+        if (message.Text == "ГЏГ®Г·Г ГІГЁ Г§Г Г­Г®ГўГ®")
         {
             if (user.Step >= UserStep.MainMenu) return;
 
@@ -25,7 +25,7 @@ public class MessageHandler
             user.Step = UserStep.StartOver;
             await _userService.SaveUser(user);
         }
-        else if (message.Text == "Налаштування")
+        else if (message.Text == "ГЌГ Г«Г ГёГІГіГўГ Г­Г­Гї")
         {
             if (user.Step < UserStep.MainMenu) return;
 

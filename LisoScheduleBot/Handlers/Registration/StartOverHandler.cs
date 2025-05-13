@@ -27,8 +27,8 @@ public class StartOverHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Гаразд, давай спочатку.\n\n"+
-            "Бажаєш задати нікнейм?",
+            text: "ГѓГ Г°Г Г§Г¤, Г¤Г ГўГ Г© Г±ГЇГ®Г·Г ГІГЄГі.\n\n"+
+            "ГЃГ Г¦Г ВєГё Г§Г Г¤Г ГІГЁ Г­ВіГЄГ­ГҐГ©Г¬?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
 

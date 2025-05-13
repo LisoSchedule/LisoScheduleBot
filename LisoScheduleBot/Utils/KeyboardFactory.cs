@@ -1,4 +1,4 @@
-﻿using LisoScheduleBot.Models;
+using LisoScheduleBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LisoScheduleBot.Utils;
@@ -9,7 +9,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "Почати заново" }
+            new KeyboardButton[] { "ÐÐ¾ÑÐ°ÑÐ¸ Ð·Ð°Ð½Ð¾Ð²Ð¾" }
         })
         {
             ResizeKeyboard = true
@@ -22,8 +22,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Так", "registration:yes"),
-                InlineButton("Пізніше", "registration:later")
+                InlineButton("Ð¢Ð°Ðº", "registration:yes"),
+                InlineButton("ÐÑÐ·Ð½ÑÑÐµ", "registration:later")
             },
             new[] { InlineButton($"{firstName}", $"registration:nickname:{firstName}") }
         };
@@ -58,7 +58,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "Розклад", "Налаштування" }
+            new KeyboardButton[] { "Ð Ð¾Ð·ÐºÐ»Ð°Ð´", "ÐÐ°Ð»Ð°ÑÑÑÐ²Ð°Ð½Ð½Ñ" }
         })
         {
             ResizeKeyboard = true,
@@ -71,24 +71,24 @@ public static class KeyboardFactory
         var notifications = settings.ReceiveNotifications ? "\U0001F7E2" : "\U0001F534";
         var buttons = new List<InlineKeyboardButton[]>
         {
-            new[] { InlineButton("\U0000270F Нікнейм", "settings:nickname") }
+            new[] { InlineButton("\U0000270F ÐÑÐºÐ½ÐµÐ¹Ð¼", "settings:nickname") }
         };
 
         if (settings.ReceiveNotifications)
         {
             buttons.Add(new[]
             {
-                InlineButton($"{notifications} Сповіщення", "settings:notifications"),
-                InlineButton($"\U000023F0 За {(int)settings.TimeBeforeClassToNotify} хв. до Пар", "settings:time_before_class") 
+                InlineButton($"{notifications} Ð¡Ð¿Ð¾Ð²ÑÑÐµÐ½Ð½Ñ", "settings:notifications"),
+                InlineButton($"\U000023F0 ÐÐ° {(int)settings.TimeBeforeClassToNotify} ÑÐ². Ð´Ð¾ ÐÐ°Ñ", "settings:time_before_class") 
             });
         }
         else
         {
-            buttons.Add(new[] { InlineButton($"{notifications} Сповіщення", "settings:notifications") });
+            buttons.Add(new[] { InlineButton($"{notifications} Ð¡Ð¿Ð¾Ð²ÑÑÐµÐ½Ð½Ñ", "settings:notifications") });
         }
 
-        buttons.Add(new[] { InlineButton("\U0001F5D1 Профіль", "settings:profile") });
-        buttons.Add(new[] { InlineButton("\U0001F3E0 Головне Меню", "settings:main_menu") });
+        buttons.Add(new[] { InlineButton("\U0001F5D1 ÐÑÐ¾ÑÑÐ»Ñ", "settings:profile") });
+        buttons.Add(new[] { InlineButton("\U0001F3E0 ÐÐ¾Ð»Ð¾Ð²Ð½Ðµ ÐÐµÐ½Ñ", "settings:main_menu") });
 
         return new InlineKeyboardMarkup(buttons);
     }
@@ -99,8 +99,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Так", "settings:yes"),
-                InlineButton("Пізніше", "settings:later")
+                InlineButton("Ð¢Ð°Ðº", "settings:yes"),
+                InlineButton("ÐÑÐ·Ð½ÑÑÐµ", "settings:later")
             }
         });
     }
@@ -111,8 +111,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Видалити", "settings:remove"),
-                InlineButton("Скасувати", "settings:cancel")
+                InlineButton("ÐÐ¸Ð´Ð°Ð»Ð¸ÑÐ¸", "settings:remove"),
+                InlineButton("Ð¡ÐºÐ°ÑÑÐ²Ð°ÑÐ¸", "settings:cancel")
             }
         });
     }
