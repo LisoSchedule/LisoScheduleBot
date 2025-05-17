@@ -29,7 +29,7 @@ public static class EnumConverter<T>
         return type switch
         {
             SubjectType.Lecture => "Лекція",
-            SubjectType.Practice => "Практика",
+            SubjectType.Practice => "Лабораторне заняття",
             _ => type.ToString()
         };
     }

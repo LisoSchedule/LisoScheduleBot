@@ -1,4 +1,5 @@
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
@@ -32,6 +33,7 @@ public class ScheduleCallbackHandler : ICallbackHandler
 
         List<ScheduleItem>? scheduleItems;
         string schedule = string.Empty;
+        string text = string.Empty;
 
         switch (message)
         {
@@ -40,18 +42,24 @@ public class ScheduleCallbackHandler : ICallbackHandler
 
                 foreach (var item in scheduleItems)
                 {
-                    schedule += $"Предмет: {item.Subject}\n" +
-                        $"Викладач: {item.Teacher}\n" +
-                        $"Місце: {item.Classroom}\n" +
-                        $"Початок: {item.StartTime:HH:mm}\n" +
-                        $"Кінець: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
+                    schedule += $"{Emoji.Books} *Тип*: {item.SubjectType}\n" +
+                        $"{Emoji.ClosedBook} *Предмет*: {item.Subject}\n" +
+                        $"{Emoji.Silhoutte} *Викладач*: {item.Teacher}\n" +
+                        $"{Emoji.Pin} *Місце*: {item.Classroom}\n" +
+                        $"{Emoji.TwelveOClock} *Початок*: {item.StartTime:HH:mm}\n" +
+                        $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
                 }
+
+                text = scheduleItems.Count == 0
+                    ? $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}) відсутній."
+                    : $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}):\n\n" + schedule;
 
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}):\n\n" + schedule,
-                    replyMarkup: KeyboardFactory.TodayBack()
+                    text: text,
+                    replyMarkup: KeyboardFactory.TodayBack(),
+                    parseMode: ParseMode.Markdown
                 );
 
                 user.Step = UserStep.ScheduleToday;
@@ -77,18 +85,24 @@ public class ScheduleCallbackHandler : ICallbackHandler
 
                 foreach (var item in scheduleItems)
                 {
-                    schedule += $"Предмет: {item.Subject}\n" +
-                        $"Викладач: {item.Teacher}\n" +
-                        $"Місце: {item.Classroom}\n" +
-                        $"Початок: {item.StartTime:HH:mm}\n" +
-                        $"Кінець: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
+                    schedule += $"{Emoji.Books} *Тип*: {item.SubjectType}\n" +
+                        $"{Emoji.ClosedBook} *Предмет*: {item.Subject}\n" +
+                        $"{Emoji.Silhoutte} *Викладач*: {item.Teacher}\n" +
+                        $"{Emoji.Pin} *Місце*: {item.Classroom}\n" +
+                        $"{Emoji.TwelveOClock} *Початок*: {item.StartTime:HH:mm}\n" +
+                        $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
                 }
+
+                text = scheduleItems.Count == 0
+                    ? $"{Emoji.Date} Розклад на {date:dd.MM.yy} відсутній."
+                    : $"{Emoji.Date} Розклад на {date:dd.MM.yy}:\n\n" + schedule;
 
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: $"{Emoji.Date} Розклад на {date}:\n\n" + schedule,
-                    replyMarkup: KeyboardFactory.DateBack(DateOnly.Parse(date))
+                    text: text,
+                    replyMarkup: KeyboardFactory.DateBack(DateOnly.Parse(date)),
+                    parseMode: ParseMode.Markdown
                 );
 
                 user.Step = UserStep.ScheduleDate;

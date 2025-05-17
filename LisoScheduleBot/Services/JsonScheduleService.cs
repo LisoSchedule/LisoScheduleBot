@@ -2,6 +2,7 @@
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Repositories;
+using LisoScheduleBot.Utils;
 
 namespace LisoScheduleBot.Services;
 
@@ -48,6 +49,7 @@ public class JsonScheduleService : IScheduleService
             scheduleItems.Add(
                 new ScheduleItem 
                 {
+                    SubjectType = EnumConverter<SubjectType>.EnumToString(subject!.Type),
                     Subject = subject!.Name,
                     Teacher = teacher!.FullName,
                     Classroom = $"Корпус {classroom!.Hull}, Ауд. {classroom.Room}",

@@ -80,7 +80,7 @@ public static class KeyboardFactory
             buttons.Add(new[]
             {
                 InlineButton($"{notifications} Сповіщення", "settings:notifications"),
-                InlineButton($"{Emoji.Clock} За {(int)settings.TimeBeforeClassToNotify} хв. до Пар", "settings:time_before_class") 
+                InlineButton($"{Emoji.Clock} {(int)settings.TimeBeforeClassToNotify} хв. до Пари", "settings:time_before_class") 
             });
         }
         else
@@ -125,7 +125,7 @@ public static class KeyboardFactory
             new[]
             {
                 InlineButton($"{Emoji.Date} Сьогодні", "schedule:today"),
-                InlineButton($"{Emoji.Calendar} За Датою", "schedule:from_date")
+                InlineButton($"{Emoji.Calendar} За Днем", "schedule:from_date")
             },
             new[]
             {
@@ -138,7 +138,7 @@ public static class KeyboardFactory
     {
         return new InlineKeyboardMarkup(new[]
         {
-            new[] { InlineButton($"{Emoji.OpenBook} До Розкладу", "schedule:back") }
+            new[] { InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back") }
         });
     }
 
@@ -159,7 +159,7 @@ public static class KeyboardFactory
             new[] 
             { 
                 InlineButton($"{Emoji.ArrowLeft} Назад", $"schedule:{callback}"),
-                InlineButton($"{Emoji.OpenBook} До Розкладу", "schedule:back")
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back")
             }
         });
     }
@@ -198,7 +198,7 @@ public static class KeyboardFactory
             },
             new[]
             {
-                InlineButton($"{Emoji.OpenBook} До Розкладу", "schedule:back"),
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
                 InlineButton($"Далі {Emoji.ArrowRight}", "schedule:next")
             }
         };
@@ -241,7 +241,7 @@ public static class KeyboardFactory
             new[]
             {
                 InlineButton($"{Emoji.ArrowLeft} Назад", "schedule:previous"),
-                InlineButton($"{Emoji.OpenBook} До Розкладу", "schedule:back"),
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
             }
         };
 

@@ -1,28 +1,50 @@
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LisoScheduleBot.Handlers.Schedule;
 
 public class ScheduleDateHandler : IUserStepHandler
 {
     private readonly IMessageService _messageService;
+    private readonly IScheduleService _scheduleService;
 
-    public ScheduleDateHandler(IMessageService messageService)
+    public ScheduleDateHandler(IMessageService messageService, IScheduleService scheduleService)
     {
         _messageService = messageService;
+        _scheduleService = scheduleService;
     }
 
     public UserStep Step => UserStep.ScheduleDate;
-
     public async Task Handle(Message message, User user)
     {
+        var scheduleItems = await _scheduleService.GetScheduleItemsByDate(DateOnly.FromDateTime(DateTime.UtcNow), user);
+        var schedule = string.Empty;
+
+        foreach (var item in scheduleItems)
+        {
+            schedule += $"*Тип*: {item.SubjectType}\n" +
+                $"*Предмет*: {item.Subject}\n" +
+                $"*Викладач*: {item.Teacher}\n" +
+                $"*Місце*: {item.Classroom}\n" +
+                $"*Початок*: {item.StartTime:HH:mm}\n" +
+                $"*Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
+        }
+
+        var text = scheduleItems.Count == 0
+            ? $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy} відсутній."
+            : $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy}:\n\n" + schedule;
+
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}).",
-            replyMarkup: KeyboardFactory.DateBack(DateOnly.FromDateTime(DateTime.UtcNow))
+            text: text,
+            replyMarkup: KeyboardFactory.TodayBack(),
+            parseMode: ParseMode.Markdown
         );
     }
 }

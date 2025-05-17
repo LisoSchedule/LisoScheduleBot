@@ -26,4 +26,9 @@ public static class Emoji
     public static string ArrowRight { get; } = "\U000027A1";
     public static string Calendar { get; } = "\U0001F4C6";
     public static string Date { get; } = "\U0001F4C5";
+    public static string TwelveOClock { get; } = "\U0001F55B";
+    public static string ThreeOClock { get; } = "\U0001F552";
+    public static string Pin { get; } = "\U0001F4CD";
+    public static string Books { get; } = "\U0001F4DA";
+    public static string ClosedBook { get; } = "\U0001F4D9";
 }
