@@ -27,8 +27,9 @@ public class ChoosingNicknameHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Чудово, нікнейм задано. Ти зможеш змінити його у налаштуваннях." +
-            "\n\nОбери свою групу.",
+            text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
+                $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
+                $"{Emoji.Silhoutte} Обери свою групу.",
             replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
         );
 

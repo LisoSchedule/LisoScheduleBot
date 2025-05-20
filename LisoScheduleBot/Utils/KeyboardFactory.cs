@@ -1,5 +1,7 @@
-using LisoScheduleBot.Models;
+﻿using LisoScheduleBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
+using LisoScheduleBot.Enums;
+using LisoScheduleBot.Models;
 
 namespace LisoScheduleBot.Utils;
 
@@ -9,7 +11,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "ÐÐ¾ÑÐ°ÑÐ¸ Ð·Ð°Ð½Ð¾Ð²Ð¾" }
+            new KeyboardButton[] { $"{Emoji.Refresh} Почати заново" }
         })
         {
             ResizeKeyboard = true
@@ -22,8 +24,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Ð¢Ð°Ðº", "registration:yes"),
-                InlineButton("ÐÑÐ·Ð½ÑÑÐµ", "registration:later")
+                InlineButton($"{Emoji.ThumbsUp} Так", "registration:yes"),
+                InlineButton($"{Emoji.ThumbsDown} Пізніше", "registration:later")
             },
             new[] { InlineButton($"{firstName}", $"registration:nickname:{firstName}") }
         };
@@ -39,7 +41,7 @@ public static class KeyboardFactory
     public static InlineKeyboardMarkup GroupsList(List<Group> groups)
     {
         var buttons = groups
-            .Select(group => InlineButton(group.Name!, $"registration:group_name:{group.Name}"))
+            .Select(group => InlineButton(EnumConverter<GroupName>.EnumToString(group.Name!), $"registration:group_name:{group.Name}"))
             .ToArray();
 
         return new InlineKeyboardMarkup(buttons);
@@ -58,7 +60,7 @@ public static class KeyboardFactory
     {
         return new ReplyKeyboardMarkup(new[]
         {
-            new KeyboardButton[] { "Ð Ð¾Ð·ÐºÐ»Ð°Ð´", "ÐÐ°Ð»Ð°ÑÑÑÐ²Ð°Ð½Ð½Ñ" }
+            new KeyboardButton[] { $"{Emoji.OpenBook} Розклад", $"{Emoji.Gear} Налаштування" }
         })
         {
             ResizeKeyboard = true,
@@ -68,27 +70,27 @@ public static class KeyboardFactory
 
     public static InlineKeyboardMarkup Settings(UserSettings settings)
     {
-        var notifications = settings.ReceiveNotifications ? "\U0001F7E2" : "\U0001F534";
+        var notifications = settings.ReceiveNotifications ? Emoji.GreenCircle : Emoji.RedCircle;
         var buttons = new List<InlineKeyboardButton[]>
         {
-            new[] { InlineButton("\U0000270F ÐÑÐºÐ½ÐµÐ¹Ð¼", "settings:nickname") }
+            new[] { InlineButton($"{Emoji.Pen} Нікнейм", "settings:nickname") }
         };
 
         if (settings.ReceiveNotifications)
         {
             buttons.Add(new[]
             {
-                InlineButton($"{notifications} Ð¡Ð¿Ð¾Ð²ÑÑÐµÐ½Ð½Ñ", "settings:notifications"),
-                InlineButton($"\U000023F0 ÐÐ° {(int)settings.TimeBeforeClassToNotify} ÑÐ². Ð´Ð¾ ÐÐ°Ñ", "settings:time_before_class") 
+                InlineButton($"{notifications} Сповіщення", "settings:notifications"),
+                InlineButton($"{Emoji.Clock} {(int)settings.TimeBeforeClassToNotify} хв. до Пари", "settings:time_before_class") 
             });
         }
         else
         {
-            buttons.Add(new[] { InlineButton($"{notifications} Ð¡Ð¿Ð¾Ð²ÑÑÐµÐ½Ð½Ñ", "settings:notifications") });
+            buttons.Add(new[] { InlineButton($"{notifications} Сповіщення", "settings:notifications") });
         }
 
-        buttons.Add(new[] { InlineButton("\U0001F5D1 ÐÑÐ¾ÑÑÐ»Ñ", "settings:profile") });
-        buttons.Add(new[] { InlineButton("\U0001F3E0 ÐÐ¾Ð»Ð¾Ð²Ð½Ðµ ÐÐµÐ½Ñ", "settings:main_menu") });
+        buttons.Add(new[] { InlineButton($"{Emoji.TrashCan} Профіль", "settings:profile") });
+        buttons.Add(new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") });
 
         return new InlineKeyboardMarkup(buttons);
     }
@@ -99,8 +101,8 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("Ð¢Ð°Ðº", "settings:yes"),
-                InlineButton("ÐÑÐ·Ð½ÑÑÐµ", "settings:later")
+                InlineButton($"{Emoji.ThumbsUp} Так", "settings:yes"),
+                InlineButton($"{Emoji.ThumbsDown} Пізніше", "settings:later")
             }
         });
     }
@@ -111,10 +113,140 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton("ÐÐ¸Ð´Ð°Ð»Ð¸ÑÐ¸", "settings:remove"),
-                InlineButton("Ð¡ÐºÐ°ÑÑÐ²Ð°ÑÐ¸", "settings:cancel")
+                InlineButton($"{Emoji.TrashCan} Видалити", "settings:remove"),
+                InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
             }
         });
+    }
+
+    public static InlineKeyboardMarkup TodayFromDate()
+    {
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[]
+            {
+                InlineButton($"{Emoji.Date} Сьогодні", "schedule:today"),
+                InlineButton($"{Emoji.Calendar} За Днем", "schedule:from_date")
+            },
+            new[]
+            {
+                InlineButton($"{Emoji.House} Головне Меню", "schedule:main_menu")
+            }
+        });
+    }
+
+    public static InlineKeyboardMarkup TodayBack()
+    {
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[] { InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back") }
+        });
+    }
+
+    public static InlineKeyboardMarkup DateBack(DateOnly date)
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var daysToMondayDate = ((int)date.DayOfWeek + 6) % 7;
+        var daysToMondayToday = ((int)today.DayOfWeek + 6) % 7;
+
+        var mondayOfDate = date.AddDays(-daysToMondayDate);
+        var mondayOfToday = today.AddDays(-daysToMondayToday);
+
+        var callback = mondayOfDate == mondayOfToday ? "this_week" : "next_week";
+
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[] 
+            { 
+                InlineButton($"{Emoji.ArrowLeft} Назад", $"schedule:{callback}"),
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back")
+            }
+        });
+    }
+
+    public static InlineKeyboardMarkup WeekButtons()
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var daysToMonday = ((int)today.DayOfWeek + 6) % 7;
+        var monday = today.AddDays(-daysToMonday);
+
+        var days = new[]
+        {
+            ("Понеділок", 0),
+            ("Вівторок", 1),
+            ("Середа", 2),
+            ("Четвер", 3),
+            ("П'ятниця", 4)
+        };
+
+        var buttons = new List<InlineKeyboardButton[]>
+        {
+            new[]
+            {
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+            },
+            new[]
+            {
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+            },
+            new[]
+            {
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+            },
+            new[]
+            {
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
+                InlineButton($"Далі {Emoji.ArrowRight}", "schedule:next")
+            }
+        };
+
+        return new InlineKeyboardMarkup(buttons);
+    }
+
+    public static InlineKeyboardMarkup NextWeekButtons()
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var daysToMonday = ((int)today.DayOfWeek + 6) % 7;
+        var monday = today.AddDays(-daysToMonday).AddDays(7);
+
+        var days = new[]
+        {
+            ($"{monday:dd.MM.yy}", 0),
+            ($"{monday.AddDays(1):dd.MM.yy}", 1),
+            ($"{monday.AddDays(2):dd.MM.yy}", 2),
+            ($"{monday.AddDays(3):dd.MM.yy}", 3),
+            ($"{monday.AddDays(4):dd.MM.yy}", 4)
+        };
+
+        var buttons = new List<InlineKeyboardButton[]>
+        {
+            new[]
+            {
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+            },
+            new[]
+            {
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+            },
+            new[]
+            {
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+            },
+            new[]
+            {
+                InlineButton($"{Emoji.ArrowLeft} Назад", "schedule:previous"),
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
+            }
+        };
+
+        return new InlineKeyboardMarkup(buttons);
     }
 
     private static InlineKeyboardButton InlineButton(string text, string callbackData)

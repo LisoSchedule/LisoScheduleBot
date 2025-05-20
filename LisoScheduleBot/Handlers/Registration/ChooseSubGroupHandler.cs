@@ -28,8 +28,8 @@ public class ChooseSubGroupHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Обери свою підгрупу.",  
-            replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!))
+            text: $"{Emoji.DoubleSilhoutte} РћР±РµСЂРё СЃРІРѕСЋ РїС–РґРіСЂСѓРїСѓ.",
+            replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!.ToString()))
         );
 
         user.Step = UserStep.ChooseSubGroup;

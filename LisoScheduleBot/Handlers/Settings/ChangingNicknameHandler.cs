@@ -4,7 +4,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
 public class ChangingNicknameHandler : IUserStepHandler
 {
@@ -25,8 +25,8 @@ public class ChangingNicknameHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Чудово, нікнейм задано.\n\n" +
-            "Обирай, що забажаєш.",
+            text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n\n" +
+                $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
             replyMarkup: KeyboardFactory.Settings(user.Settings)
         );
 

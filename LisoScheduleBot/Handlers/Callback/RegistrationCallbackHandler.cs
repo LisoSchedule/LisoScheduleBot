@@ -12,7 +12,8 @@ public class RegistrationCallbackHandler : ICallbackHandler
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
 
-    public RegistrationCallbackHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public RegistrationCallbackHandler(IGroupService groupService, IMessageService messageService, 
+        IUserService userService)
     {
         _groupService = groupService;
         _messageService = messageService;
@@ -34,7 +35,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Ââåäè áàæàíèé í³êíåéì."
+                    text: $"{Emoji.WritingHand} Введи бажаний нікнейм."
                 );
 
                 user.Step = UserStep.ChoosingNickname;
@@ -45,7 +46,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Îáåðè ñâîþ ãðóïó.",
+                    text: $"{Emoji.Silhoutte} Обери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -59,8 +60,9 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "×óäîâî, í³êíåéì çàäàíî. Òè çìîæåø çì³íèòè éîãî ó íàëàøòóâàííÿõ." +
-                          "\n\nÎáåðè ñâîþ ãðóïó.",
+                    text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
+                        $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
+                        $"{Emoji.Silhoutte} Обери свою групу.",
                     replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
                 );
 
@@ -76,7 +78,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: "Îáåðè ñâîþ ï³äãðóïó.",
+                    text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
                     replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
                 );
 
@@ -91,7 +93,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 await _messageService.DeleteMessage(chatId, messageId);
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
-                    text: "Òåáå óñï³øíî çàðåºñòðîâàíî!",
+                    text: $"{Emoji.RacingFlag} Тебе успішно зареєстровано!",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 

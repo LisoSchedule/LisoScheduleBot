@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
@@ -21,6 +22,7 @@ public class User
     public int GroupId { get; set; }
 
     [JsonProperty("step")]
+    [JsonConverter(typeof(StringEnumConverter))]
     public UserStep Step { get; set; }
 
     [JsonProperty("created_at")]

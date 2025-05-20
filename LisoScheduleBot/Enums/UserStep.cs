@@ -16,6 +16,13 @@ public enum UserStep
     // Main Menu
     MainMenu,
 
+    // Schedule
+    ChooseSchedule,
+    ScheduleToday,
+    ScheduleThisWeek,
+    ScheduleNextWeek,
+    ScheduleDate,
+
     //Settings
     ChangeSettings,
     ChangeNickname,

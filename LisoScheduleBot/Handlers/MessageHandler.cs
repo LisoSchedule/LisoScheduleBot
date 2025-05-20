@@ -1,6 +1,7 @@
 using Telegram.Bot.Types;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
+using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers;
@@ -16,7 +17,7 @@ public class MessageHandler
 
     public async Task Handle(Message message, User user)
     {
-        if (message.Text == "ГЏГ®Г·Г ГІГЁ Г§Г Г­Г®ГўГ®")
+        if (message.Text == $"{Emoji.Refresh} Почати заново")
         {
             if (user.Step >= UserStep.MainMenu) return;
 
@@ -25,12 +26,19 @@ public class MessageHandler
             user.Step = UserStep.StartOver;
             await _userService.SaveUser(user);
         }
-        else if (message.Text == "ГЌГ Г«Г ГёГІГіГўГ Г­Г­Гї")
+        else if (message.Text == $"{Emoji.Gear} Налаштування")
         {
             if (user.Step < UserStep.MainMenu) return;
 
             user.Step = UserStep.ChangeSettings;
             await _userService.SaveUser(user);
         }
+        else if (message.Text == $"{Emoji.OpenBook} Розклад")
+        {
+            if (user.Step < UserStep.MainMenu) return;
+
+            user.Step = UserStep.ChooseSchedule;
+            await _userService.SaveUser(user);
+        }    
     }
 }

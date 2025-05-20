@@ -4,7 +4,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
 public class ChangeNicknameHandler : IUserStepHandler
 {
@@ -21,7 +21,9 @@ public class ChangeNicknameHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: user.Nickname != null ? "ЅажаЇш задати н≥кнейм?" : "ЅажаЇш зм≥нити н≥кнейм?",
+            text: user.Nickname != null 
+                ? $"{Emoji.Pen} ЅажаЇш задати н≥кнейм?"
+                : $"{Emoji.Pen} ЅажаЇш зм≥нити н≥кнейм?",
             replyMarkup: KeyboardFactory.YesLater()
         );
     }

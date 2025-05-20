@@ -4,7 +4,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
 public class ChangeSettingsHandler : IUserStepHandler
 {
@@ -21,7 +21,7 @@ public class ChangeSettingsHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Îבטנאי, שמ חאבאזא÷ר.",
+            text: $"{Emoji.PhoneWithArrow} Îבטנאי, שמ חאבאזא÷ר.",
             replyMarkup: KeyboardFactory.Settings(user.Settings)
         );
     }

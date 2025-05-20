@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using LisoScheduleBot.Enums;
 
 namespace LisoScheduleBot.Models;
@@ -15,6 +16,7 @@ public class UserSettings
     public bool ReceiveNotifications { get; set; }
 
     [JsonProperty("time_before_class_to_notify")]
+    [JsonConverter(typeof(StringEnumConverter))]
     public TimeBeforeClass TimeBeforeClassToNotify { get; set; }
 
     [JsonProperty("created_at")]

@@ -4,7 +4,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
 public class RemoveProfileHandler : IUserStepHandler
 {
@@ -21,7 +21,7 @@ public class RemoveProfileHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: "Бажаєш видалити профіль?",
+            text: $"{Emoji.PersonWithTrash} Бажаєш видалити профіль?",
             replyMarkup: KeyboardFactory.RemoveCancel()
         );
     }
