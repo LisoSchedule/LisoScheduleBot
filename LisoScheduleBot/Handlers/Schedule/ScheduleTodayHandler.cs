@@ -4,7 +4,6 @@ using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LisoScheduleBot.Handlers.Schedule;
 
