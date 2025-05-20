@@ -10,11 +10,13 @@ public class ChooseGroupHandler : IUserStepHandler
 {
     private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
+    private readonly IUserService _userService;
 
-    public ChooseGroupHandler(IGroupService groupService, IMessageService messageService)
+    public ChooseGroupHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
     {
         _groupService = groupService;
         _messageService = messageService;
+        _userService = userService;
     }
 
     public UserStep Step => UserStep.ChooseGroup;
@@ -26,5 +28,8 @@ public class ChooseGroupHandler : IUserStepHandler
             text: $"{Emoji.Silhoutte} Обери свою групу.",
             replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
         );
+
+        user.Step = UserStep.ChooseGroup;
+        await _userService.SaveUser(user);
     }
 }

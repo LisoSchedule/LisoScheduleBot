@@ -89,6 +89,8 @@ public class Startup
         services.AddSingleton<IUserService, JsonUserService>();
         services.AddSingleton<IService<UserSettings>, JsonUserSettingsService>();
         services.AddSingleton<IMessageService, MessageService>();
+        services.AddSingleton<IUserService, UserService>();
+        services.AddSingleton<IUserSettingsService, UserSettingsService>();
     }
 
     public void Configure(WebApplication app)

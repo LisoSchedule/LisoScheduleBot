@@ -36,5 +36,6 @@ public class ChoosingNicknameHandler : IUserStepHandler
         user.Nickname = nickname;
         user.Step = UserStep.ChooseGroup;
         await _userService.SaveUser(user);
+        //http запит
     }
 }

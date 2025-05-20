@@ -35,5 +35,8 @@ public class ChooseNicknameHandler : IUserStepHandler
             text: $"{Emoji.Pen} ЅажаЇш задати н≥кнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
+
+        user.Step = UserStep.ChooseNickname;
+        await _userService.SaveUser(user);
     }
 }

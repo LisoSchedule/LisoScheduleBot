@@ -23,6 +23,7 @@ public class ChooseSubGroupHandler : IUserStepHandler
 
     public async Task Handle(Message message, User user)
     {
+        //var groups = api request
         var group = await _groupService.GetGroup(user.GroupId);
 
         await _messageService.SendMessage(
@@ -30,5 +31,9 @@ public class ChooseSubGroupHandler : IUserStepHandler
             text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
             replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name!.ToString()))
         );
+
+        user.Step = UserStep.ChooseSubGroup;
+        await _userService.SaveUser(user);
+        //api request
     }
 }

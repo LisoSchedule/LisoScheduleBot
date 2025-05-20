@@ -34,5 +34,6 @@ public class StartOverHandler : IUserStepHandler
 
         user.Step = UserStep.ChooseNickname;
         await _userService.SaveUser(user);
+        //api request
     }
 }
