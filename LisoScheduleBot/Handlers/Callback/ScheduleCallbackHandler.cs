@@ -33,7 +33,7 @@ public class ScheduleCallbackHandler : ICallbackHandler
 
         List<ScheduleItem>? scheduleItems;
         string schedule = string.Empty;
-        string text = string.Empty;
+        string text;
 
         switch (message)
         {
@@ -50,9 +50,10 @@ public class ScheduleCallbackHandler : ICallbackHandler
                         $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
                 }
 
-                text = scheduleItems.Count == 0
-                    ? $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}) відсутній."
-                    : $"{Emoji.Date} Розклад на сьогодні ({DateTime.UtcNow:dd.MM.yy}):\n\n" + schedule;
+                text = $"{Emoji.Date} *Розклад* на сьогодні ({DateTime.UtcNow:dd.MM.yy})";
+                text += scheduleItems.Count == 0
+                    ? " відсутній."
+                    : ":\n\n" + schedule;
 
                 await _messageService.EditMessage(
                     chatId: chatId,
@@ -93,9 +94,10 @@ public class ScheduleCallbackHandler : ICallbackHandler
                         $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
                 }
 
-                text = scheduleItems.Count == 0
-                    ? $"{Emoji.Date} Розклад на {date:dd.MM.yy} відсутній."
-                    : $"{Emoji.Date} Розклад на {date:dd.MM.yy}:\n\n" + schedule;
+                text = $"{Emoji.Date} *Розклад* на {date:dd.MM.yy}";
+                text += scheduleItems.Count == 0
+                    ? " відсутній."
+                    : ":\n\n" + schedule;
 
                 await _messageService.EditMessage(
                     chatId: chatId,

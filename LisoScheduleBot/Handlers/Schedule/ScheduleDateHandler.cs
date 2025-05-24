@@ -34,9 +34,10 @@ public class ScheduleDateHandler : IUserStepHandler
                 $"*Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
         }
 
-        var text = scheduleItems.Count == 0
-            ? $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy} відсутній."
-            : $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy}:\n\n" + schedule;
+        var text = $"{Emoji.Date} *Розклад* на {DateTime.UtcNow:dd.MM.yy}";
+        text += scheduleItems.Count == 0
+            ? " відсутній."
+            : ":\n\n" + schedule;
 
         await _messageService.SendMessage(
             chatId: user.ChatId,

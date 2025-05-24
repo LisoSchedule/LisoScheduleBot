@@ -18,7 +18,14 @@ public class JsonUserService : IUserService
 
     public async Task<List<User>> GetAllUsers()
     {
-        return await _userRepository.GetAll();
+        var allUsers = await _userRepository.GetAll();
+
+        foreach (var user in allUsers)
+        {
+            user.Settings = await _settingsService.GetOrCreateEntity(user.UserId);
+        }
+
+        return allUsers;
     }
 
     public async Task<User> GetOrCreateUser(long chatId, string? username = null)

@@ -9,10 +9,12 @@ namespace LisoScheduleBot.Handlers;
 public class MessageHandler
 {
     private readonly IUserService _userService;
+    private readonly INotificationService _notificationService;
 
-    public MessageHandler(IUserService userService)
+    public MessageHandler(IUserService userService, INotificationService notificationService)
     {
         _userService = userService;
+        _notificationService = notificationService;
     }
 
     public async Task Handle(Message message, User user)

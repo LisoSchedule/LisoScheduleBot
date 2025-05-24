@@ -1,5 +1,4 @@
-﻿using LisoScheduleBot.Models;
-using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types.ReplyMarkups;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Models;
 
