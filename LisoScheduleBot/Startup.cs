@@ -99,10 +99,10 @@ public class Startup
         services.AddHangfireServer();
     }
 
-    public void Configure(WebApplication app)
+    public async Task Configure(WebApplication app)
     {
         var hangfireService = app.Services.GetRequiredService<HangfireService>();
-        hangfireService.RegisterJobs();
+        await hangfireService.RegisterJobs();
 
         app.UseHangfireDashboard();
         app.MapGet("/", () => "Bot is running...");
