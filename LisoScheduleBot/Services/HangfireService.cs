@@ -61,11 +61,10 @@ public class HangfireService
             {
                 var notifyTime = time.AddMinutes(-reminderTime);
 
-                if (notifyTime.Hour < 0 || notifyTime.Minute < 0)
-                    continue;
+                if (notifyTime.Hour < 0 || notifyTime.Minute < 0) continue;
 
                 var localHour = (notifyTime.Hour - offset) % 24;
-                var cron = $"{notifyTime.Minute} {localHour} * * *";
+                var cron = Cron.Daily(localHour, notifyTime.Minute);
 
                 if (!crons.Contains(cron)) crons.Add(cron);
             }

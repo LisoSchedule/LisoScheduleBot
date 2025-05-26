@@ -32,15 +32,12 @@ public class JsonScheduleService : IScheduleService
 
         foreach (var recurrence in recurrences)
         {
-            if (!IsDateInRecurrence(recurrence, date))
-                continue;
+            if (!IsDateInRecurrence(recurrence, date)) continue;
 
             var lesson = await _lessonRepository.Get(recurrence.LessonId);
-            if (lesson == null)
-                continue;
+            if (lesson == null) continue;
 
-            if (lesson.GroupId != user.GroupId)
-                continue;
+            if (lesson.GroupId != user.GroupId) continue;
 
             var subject = await _subjectRepository.Get(lesson.SubjectId);
             var teacher = await _teacherRepository.Get(lesson.TeacherId);
