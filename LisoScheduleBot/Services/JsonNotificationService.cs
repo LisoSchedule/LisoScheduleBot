@@ -48,6 +48,7 @@ public class JsonNotificationService : INotificationService
                     $"{Emoji.TwelveOClock} *Початок*: {nextItem.StartTime:HH:mm}\n" +
                     $"{Emoji.ThreeOClock} *Кінець*: {nextItem.StartTime.AddMinutes(nextItem.Duration):HH:mm}\n" +
                     $"{Emoji.Hourglass} *До початку*: {timeBeforeClass} хвилин",
+                    replyMarkup: KeyboardFactory.OpenSettings(),
                     parseMode: ParseMode.Markdown
                 );
             }

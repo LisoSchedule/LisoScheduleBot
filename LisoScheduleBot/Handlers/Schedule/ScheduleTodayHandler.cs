@@ -27,12 +27,12 @@ public class ScheduleTodayHandler : IUserStepHandler
 
         foreach (var item in scheduleItems)
         {
-            schedule += $"*Тип*: {item.SubjectType}\n" +
-                $"*Предмет*: {item.Subject}\n" +
-                $"*Викладач*: {item.Teacher}\n" +
-                $"*Місце*: {item.Classroom}\n" +
-                $"*Початок*: {item.StartTime:HH:mm}\n" +
-                $"*Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
+            schedule += $"{Emoji.Books} *Тип*: {item.SubjectType}\n" +
+                $"{Emoji.ClosedBook} *Предмет*: {item.Subject}\n" +
+                $"{Emoji.Silhoutte} *Викладач*: {item.Teacher}\n" +
+                $"{Emoji.Pin} *Місце*: {item.Classroom}\n" +
+                $"{Emoji.TwelveOClock} *Початок*: {item.StartTime:HH:mm}\n" +
+                $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
         }
 
         var text = $"{Emoji.Date} *Розклад* на сьогодні ({DateTime.UtcNow:dd.MM.yy})";

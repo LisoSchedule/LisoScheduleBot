@@ -29,6 +29,20 @@ public class RegistrationCallbackHandler : ICallbackHandler
         var messageId = callbackQuery.Message!.MessageId;
         var chatId = user.ChatId;
 
+        if (user.Step >= UserStep.MainMenu)
+        {
+            await _messageService.DeleteMessage(chatId, messageId);
+
+            await _messageService.SendMessage(
+                chatId: user.ChatId,
+                text: $"{Emoji.Warning} Тебе вже зареєстровано.\n\n" +
+                    $"{Emoji.PhoneWithArrow} Обери потрібну дію.",
+                replyMarkup: KeyboardFactory.MainMenu()
+            );
+
+            return;
+        }
+
         switch (message)
         {
             case "yes":
@@ -47,7 +61,7 @@ public class RegistrationCallbackHandler : ICallbackHandler
                     chatId: chatId,
                     messageId: messageId,
                     text: $"{Emoji.Silhoutte} Обери свою групу.",
-                    replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
+                    replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups(), "registration")
                 );
 
                 user.Step = UserStep.ChooseGroup;
@@ -55,17 +69,16 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 break;
 
             case "nickname":
-                var nickname = callbackData[2];
-
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
                     text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
                         $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
                         $"{Emoji.Silhoutte} Обери свою групу.",
-                    replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
+                    replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups(), "registration")
                 );
 
+                var nickname = callbackData[2];
                 user.Nickname = nickname;
                 user.Step = UserStep.ChooseGroup;
                 await _userService.SaveUser(user);
@@ -73,15 +86,15 @@ public class RegistrationCallbackHandler : ICallbackHandler
 
             case "group_name":
                 var groupName = callbackData[2];
-                var group = await _groupService.GetGroup(groupName);
 
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
                     text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
-                    replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName))
+                    replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName), "registration")
                 );
 
+                var group = await _groupService.GetGroup(groupName);
                 user.GroupId = group.GroupId;
                 user.Step = UserStep.ChooseSubGroup;
                 await _userService.SaveUser(user);
@@ -91,9 +104,11 @@ public class RegistrationCallbackHandler : ICallbackHandler
                 var groupId = int.Parse(callbackData[2]);
 
                 await _messageService.DeleteMessage(chatId, messageId);
+
                 await _messageService.SendMessage(
                     chatId: user.ChatId,
-                    text: $"{Emoji.RacingFlag} Тебе успішно зареєстровано!",
+                    text: $"{Emoji.RacingFlag} Тебе успішно зареєстровано!\n\n" +
+                    $"{Emoji.PhoneWithArrow} Обери потрібну дію.",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
 

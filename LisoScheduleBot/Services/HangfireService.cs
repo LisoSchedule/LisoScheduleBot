@@ -1,6 +1,5 @@
 using Hangfire;
 using Hangfire.Storage;
-using LisoScheduleBot.Config;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
@@ -13,8 +12,8 @@ public class HangfireService
     private readonly INotificationService _notificationService;
     private readonly IRecurringJobManager _recurringJobManager;
 
-    public HangfireService(IService<Lesson> lessonService, 
-        INotificationService notificationService, 
+    public HangfireService(IService<Lesson> lessonService,
+        INotificationService notificationService,
         IRecurringJobManager recurringJobManager)
     {
         _lessonService = lessonService;
@@ -26,17 +25,21 @@ public class HangfireService
     {
         var crons = await GetReminderCrons();
         var allowedIds = new HashSet<string>();
-        var offset = Math.Abs(DateTime.UtcNow.Hour - DateTime.Now.Hour);
 
         foreach (var cron in crons)
         {
             var parts = cron.Split(' ');
-            var hour = (int.Parse(parts[1]) + offset) % 24;
+            var hour = parts[1];
             var min = parts[0];
             var jobId = $"send-reminders-{hour}h-{min}m";
             allowedIds.Add(jobId);
 
-            _recurringJobManager.AddOrUpdate(jobId, () => _notificationService.SendReminders(), cron);
+            var options = new RecurringJobOptions
+            {
+                TimeZone = TimeZoneInfo.Local
+            };
+
+            _recurringJobManager.AddOrUpdate(jobId, () => _notificationService.SendReminders(), cron, options);
         }
 
         RemoveObsoleteJobs(allowedIds);
@@ -53,19 +56,15 @@ public class HangfireService
         var times = await GetUniqueReminderTimes();
         var reminderTimes = Enum.GetValues<TimeBeforeClass>().Select(v => (int)v).OrderDescending();
         var crons = new List<string>();
-        var offset = Math.Abs(DateTime.UtcNow.Hour - DateTime.Now.Hour);
 
         foreach (var time in times)
         {
             foreach (var reminderTime in reminderTimes)
             {
                 var notifyTime = time.AddMinutes(-reminderTime);
-
                 if (notifyTime.Hour < 0 || notifyTime.Minute < 0) continue;
 
-                var localHour = (notifyTime.Hour - offset) % 24;
-                var cron = Cron.Daily(localHour, notifyTime.Minute);
-
+                var cron = Cron.Daily(notifyTime.Hour, notifyTime.Minute);
                 if (!crons.Contains(cron)) crons.Add(cron);
             }
         }

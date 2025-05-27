@@ -159,6 +159,23 @@ public class ScheduleCallbackHandler : ICallbackHandler
                 user.Step = UserStep.MainMenu;
                 await _userService.SaveUser(user);
                 break;
+
+            case "settings":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: callbackQuery.Message!.Text!
+                );
+
+                await _messageService.SendMessage(
+                    chatId: chatId,
+                    text: $"{Emoji.PhoneWithArrow} Îבטנאי, שמ חאבאזא÷ר.",
+                    replyMarkup: KeyboardFactory.Settings(user.Settings)
+                );
+
+                user.Step = UserStep.ChangeSettings;
+                await _userService.SaveUser(user);
+                break;
         }
     }
 }

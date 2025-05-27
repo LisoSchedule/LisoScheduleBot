@@ -57,8 +57,11 @@ public class Startup
         services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
         services.AddSingleton<IUserStepHandler, StartOverHandler>();
         services.AddSingleton<IUserStepHandler, ChangeNicknameHandler>();
+        services.AddSingleton<IUserStepHandler, ChangeGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangeSettingsHandler>();
+        services.AddSingleton<IUserStepHandler, ChangingGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangingNicknameHandler>();
+        services.AddSingleton<IUserStepHandler, ChangingSubGroupHandler>();
         services.AddSingleton<IUserStepHandler, RemoveProfileHandler>();
         services.AddSingleton<IUserStepHandler, ChooseScheduleHandler>();
         services.AddSingleton<IUserStepHandler, ScheduleDateHandler>();

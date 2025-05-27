@@ -71,13 +71,16 @@ public class JsonScheduleService : IScheduleService
             case RepeatType.Daily:
                 int daysDiff = (date.DayNumber - recurrence.StartDate.DayNumber);
                 return daysDiff % recurrence.RepeatValue == 0;
+
             case RepeatType.Weekly:
                 int totalDays = (date.DayNumber - recurrence.StartDate.DayNumber);
                 if (totalDays < 0) return false;
                 return (totalDays % (7 * recurrence.RepeatValue) == 0);
+
             case RepeatType.Monthly:
                 int monthsDiff = ((date.Year - recurrence.StartDate.Year) * 12) + (date.Month - recurrence.StartDate.Month);
                 return date.Day == recurrence.StartDate.Day && monthsDiff % recurrence.RepeatValue == 0;
+
             default:
                 return false;
         }

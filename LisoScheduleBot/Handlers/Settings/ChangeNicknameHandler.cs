@@ -1,4 +1,5 @@
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
@@ -21,10 +22,12 @@ public class ChangeNicknameHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: user.Nickname != null 
+            text: user.Nickname == string.Empty
                 ? $"{Emoji.Pen} Бажаєш задати нікнейм?"
-                : $"{Emoji.Pen} Бажаєш змінити нікнейм?",
-            replyMarkup: KeyboardFactory.YesLater()
+                : $"{Emoji.Silhoutte} Поточний нікнейм: *{user.Nickname}*\n\n" +
+                $"{Emoji.Pen} Бажаєш змінити нікнейм?",
+            replyMarkup: KeyboardFactory.YesLater("nickname"),
+            parseMode: ParseMode.Markdown
         );
     }
 }

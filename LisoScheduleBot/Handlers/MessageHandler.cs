@@ -9,12 +9,10 @@ namespace LisoScheduleBot.Handlers;
 public class MessageHandler
 {
     private readonly IUserService _userService;
-    private readonly INotificationService _notificationService;
 
-    public MessageHandler(IUserService userService, INotificationService notificationService)
+    public MessageHandler(IUserService userService)
     {
         _userService = userService;
-        _notificationService = notificationService;
     }
 
     public async Task Handle(Message message, User user)
@@ -30,14 +28,14 @@ public class MessageHandler
         }
         else if (message.Text == $"{Emoji.Gear} Налаштування")
         {
-            if (user.Step < UserStep.MainMenu) return;
+            if (user.Step != UserStep.MainMenu) return;
 
             user.Step = UserStep.ChangeSettings;
             await _userService.SaveUser(user);
         }
         else if (message.Text == $"{Emoji.OpenBook} Розклад")
         {
-            if (user.Step < UserStep.MainMenu) return;
+            if (user.Step != UserStep.MainMenu) return;
 
             user.Step = UserStep.ChooseSchedule;
             await _userService.SaveUser(user);

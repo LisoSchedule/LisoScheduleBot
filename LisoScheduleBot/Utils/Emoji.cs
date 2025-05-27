@@ -32,4 +32,5 @@ public static class Emoji
     public static string Books { get; } = "\U0001F4DA";
     public static string ClosedBook { get; } = "\U0001F4D9";
     public static string Hourglass { get; } = "\U000023F3";
+    public static string Warning { get; } = "\U000026A0";
 }
