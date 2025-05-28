@@ -1,25 +1,24 @@
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
-namespace LisoScheduleBot.Handlers.Registration;
+namespace LisoScheduleBot.Handlers.Settings;
 
-public class ChooseSubGroupHandler : IUserStepHandler
+public class ChangeGroupHandler : IUserStepHandler
 {
     private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
-    private readonly IUserService _userService;
 
-    public ChooseSubGroupHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public ChangeGroupHandler(IGroupService groupService, IMessageService messageService)
     {
         _groupService = groupService;
         _messageService = messageService;
-        _userService = userService;
     }
 
-    public UserStep Step => UserStep.ChooseSubGroup;
+    public UserStep Step => UserStep.ChangeGroup;
 
     public async Task Handle(Message message, User user)
     {
@@ -27,8 +26,10 @@ public class ChooseSubGroupHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.DoubleSilhoutte} РћР±РµСЂРё СЃРІРѕСЋ РїС–РґРіСЂСѓРїСѓ.",
-            replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(group.Name.ToString()), "registration")
+            text: $"{Emoji.Silhoutte} Поточна група: *{EnumConverter<GroupName>.EnumToString(group.Name)}/{group.SubGroup}*\n\n" +
+                $"{Emoji.Refresh} Бажаєш змінити групу?",
+            replyMarkup: KeyboardFactory.YesLater("group"),
+            parseMode: ParseMode.Markdown
         );
     }
 }

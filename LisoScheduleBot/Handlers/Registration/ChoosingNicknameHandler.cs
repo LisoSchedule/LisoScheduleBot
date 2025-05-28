@@ -23,19 +23,17 @@ public class ChoosingNicknameHandler : IUserStepHandler
 
     public async Task Handle(Message message, User user)
     {
-        var nickname = message.Text;
-
         await _messageService.SendMessage(
             chatId: user.ChatId,
             text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
                 $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
                 $"{Emoji.Silhoutte} Обери свою групу.",
-            replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups())
+            replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups(), "registration")
         );
 
+        var nickname = message.Text;
         user.Nickname = nickname;
         user.Step = UserStep.ChooseGroup;
         await _userService.SaveUser(user);
-        //http запит
     }
 }

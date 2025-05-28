@@ -26,17 +26,18 @@ public class ScheduleDateHandler : IUserStepHandler
 
         foreach (var item in scheduleItems)
         {
-            schedule += $"*Тип*: {item.SubjectType}\n" +
-                $"*Предмет*: {item.Subject}\n" +
-                $"*Викладач*: {item.Teacher}\n" +
-                $"*Місце*: {item.Classroom}\n" +
-                $"*Початок*: {item.StartTime:HH:mm}\n" +
-                $"*Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
+            schedule += $"{Emoji.Books} *Тип*: {item.SubjectType}\n" +
+                $"{Emoji.ClosedBook} *Предмет*: {item.Subject}\n" +
+                $"{Emoji.Silhoutte} *Викладач*: {item.Teacher}\n" +
+                $"{Emoji.Pin} *Місце*: {item.Classroom}\n" +
+                $"{Emoji.TwelveOClock} *Початок*: {item.StartTime:HH:mm}\n" +
+                $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
         }
 
-        var text = scheduleItems.Count == 0
-            ? $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy} відсутній."
-            : $"{Emoji.Date} Розклад на {DateTime.UtcNow:dd.MM.yy}:\n\n" + schedule;
+        var text = $"{Emoji.Date} *Розклад* на {DateTime.UtcNow:dd.MM.yy}";
+        text += scheduleItems.Count == 0
+            ? " відсутній."
+            : ":\n\n" + schedule;
 
         await _messageService.SendMessage(
             chatId: user.ChatId,

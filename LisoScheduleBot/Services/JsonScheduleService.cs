@@ -32,15 +32,12 @@ public class JsonScheduleService : IScheduleService
 
         foreach (var recurrence in recurrences)
         {
-            if (!IsDateInRecurrence(recurrence, date))
-                continue;
+            if (!IsDateInRecurrence(recurrence, date)) continue;
 
             var lesson = await _lessonRepository.Get(recurrence.LessonId);
-            if (lesson == null)
-                continue;
+            if (lesson == null) continue;
 
-            if (lesson.GroupId != user.GroupId)
-                continue;
+            if (lesson.GroupId != user.GroupId) continue;
 
             var subject = await _subjectRepository.Get(lesson.SubjectId);
             var teacher = await _teacherRepository.Get(lesson.TeacherId);
@@ -74,13 +71,16 @@ public class JsonScheduleService : IScheduleService
             case RepeatType.Daily:
                 int daysDiff = (date.DayNumber - recurrence.StartDate.DayNumber);
                 return daysDiff % recurrence.RepeatValue == 0;
+
             case RepeatType.Weekly:
                 int totalDays = (date.DayNumber - recurrence.StartDate.DayNumber);
                 if (totalDays < 0) return false;
                 return (totalDays % (7 * recurrence.RepeatValue) == 0);
+
             case RepeatType.Monthly:
                 int monthsDiff = ((date.Year - recurrence.StartDate.Year) * 12) + (date.Month - recurrence.StartDate.Month);
                 return date.Day == recurrence.StartDate.Day && monthsDiff % recurrence.RepeatValue == 0;
+
             default:
                 return false;
         }

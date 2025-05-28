@@ -1,4 +1,6 @@
 using Telegram.Bot;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using LisoScheduleBot.Config;
 using LisoScheduleBot.Dispatchers;
 using LisoScheduleBot.Handlers;
@@ -55,8 +57,11 @@ public class Startup
         services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
         services.AddSingleton<IUserStepHandler, StartOverHandler>();
         services.AddSingleton<IUserStepHandler, ChangeNicknameHandler>();
+        services.AddSingleton<IUserStepHandler, ChangeGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangeSettingsHandler>();
+        services.AddSingleton<IUserStepHandler, ChangingGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangingNicknameHandler>();
+        services.AddSingleton<IUserStepHandler, ChangingSubGroupHandler>();
         services.AddSingleton<IUserStepHandler, RemoveProfileHandler>();
         services.AddSingleton<IUserStepHandler, ChooseScheduleHandler>();
         services.AddSingleton<IUserStepHandler, ScheduleDateHandler>();
@@ -83,18 +88,26 @@ public class Startup
         services.AddSingletonWithInterfaces<JsonGroupService, IService<Group>, IGroupService>();
         services.AddSingleton<IService<LessonRecurrence>, JsonLessonRecurrenceService>();
         services.AddSingleton<IService<Lesson>, JsonLessonService>();
+        services.AddSingleton<INotificationService, JsonNotificationService>();
         services.AddSingleton<IScheduleService, JsonScheduleService>();
         services.AddSingleton<IService<Subject>, JsonSubjectService>();
         services.AddSingleton<IService<Teacher>, JsonTeacherService>();
         services.AddSingleton<IUserService, JsonUserService>();
         services.AddSingleton<IService<UserSettings>, JsonUserSettingsService>();
         services.AddSingleton<IMessageService, MessageService>();
-        services.AddSingleton<IUserService, UserService>();
-        services.AddSingleton<IUserSettingsService, UserSettingsService>();
+
+        // Hangfire
+        services.AddSingleton<HangfireService>();
+        services.AddHangfire(config => config.UseMemoryStorage());
+        services.AddHangfireServer();
     }
 
-    public void Configure(WebApplication app)
+    public async Task Configure(WebApplication app)
     {
+        var hangfireService = app.Services.GetRequiredService<HangfireService>();
+        await hangfireService.RegisterJobs();
+
+        app.UseHangfireDashboard();
         app.MapGet("/", () => "Bot is running...");
     }
 }

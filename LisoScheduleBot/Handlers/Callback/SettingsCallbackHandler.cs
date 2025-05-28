@@ -1,6 +1,8 @@
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
+using LisoScheduleBot.Models;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
 
@@ -8,11 +10,13 @@ namespace LisoScheduleBot.Handlers.Callback;
 
 public class SettingsCallbackHandler : ICallbackHandler
 {
+    private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
 
-    public SettingsCallbackHandler(IMessageService messageService, IUserService userService)
+    public SettingsCallbackHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
     {
+        _groupService = groupService;
         _messageService = messageService;
         _userService = userService;
     }
@@ -25,6 +29,7 @@ public class SettingsCallbackHandler : ICallbackHandler
         var message = callbackData[1];
         var messageId = callbackQuery.Message!.MessageId;
         var chatId = user.ChatId;
+        Group group;
 
         switch (message)
         {
@@ -34,15 +39,17 @@ public class SettingsCallbackHandler : ICallbackHandler
                     messageId: messageId,
                     text: user.Nickname == string.Empty
                         ? $"{Emoji.Pen} Бажаєш задати нікнейм?"
-                        : $"{Emoji.Pen} Бажаєш змінити нікнейм?",
-                    replyMarkup: KeyboardFactory.YesLater()
+                        : $"{Emoji.Silhoutte} Поточний нікнейм: *{user.Nickname}*\n\n" +
+                        $"{Emoji.Pen} Бажаєш змінити нікнейм?",
+                    replyMarkup: KeyboardFactory.YesLater("nickname"),
+                    parseMode: ParseMode.Markdown
                 );
 
                 user.Step = UserStep.ChangeNickname;
                 await _userService.SaveUser(user);
                 break;
 
-            case "yes":
+            case "nickname_yes":
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
@@ -53,7 +60,8 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _userService.SaveUser(user);
                 break;
 
-            case "later":
+            case "nickname_later":
+            case "group_later":
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
@@ -62,6 +70,65 @@ public class SettingsCallbackHandler : ICallbackHandler
                 );
 
                 user.Step = UserStep.ChangeSettings;
+                await _userService.SaveUser(user);
+                break;
+
+            case "group":
+                group = await _groupService.GetGroup(user.GroupId);
+
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.Silhoutte} Поточна група: *{EnumConverter<GroupName>.EnumToString(group.Name)}/{group.SubGroup}*\n\n" +
+                        $"{Emoji.Refresh} Бажаєш змінити групу?",
+                    replyMarkup: KeyboardFactory.YesLater("group"),
+                    parseMode: ParseMode.Markdown
+                );
+
+                user.Step = UserStep.ChangeGroup;
+                await _userService.SaveUser(user);
+                break;
+
+            case "group_yes":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.Silhoutte} Обери свою групу.",
+                    replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups(), "settings")
+                );
+
+                user.Step = UserStep.ChangingGroup;
+                await _userService.SaveUser(user);
+                break;
+
+            case "group_name":
+                var groupName = callbackData[2];
+
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.DoubleSilhoutte} Обери свою підгрупу.",
+                    replyMarkup: KeyboardFactory.SubGroupsList(await _groupService.GetGroups(groupName), "settings")
+                );
+
+                group = await _groupService.GetGroup(groupName);
+                user.GroupId = group.GroupId;
+                user.Step = UserStep.ChangingSubGroup;
+                await _userService.SaveUser(user);
+                break;
+
+            case "group_id":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.CheckMark} Чудово, групу змінено.\n\n" +
+                        $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
+                    replyMarkup: KeyboardFactory.Settings(user.Settings)
+                );
+
+                var groupId = int.Parse(callbackData[2]);
+                user.GroupId = groupId;
+                user.Step = UserStep.MainMenu;
                 await _userService.SaveUser(user);
                 break;
 
@@ -79,20 +146,9 @@ public class SettingsCallbackHandler : ICallbackHandler
                 break;
 
             case "time_before_class":
-                switch (user.Settings.TimeBeforeClassToNotify)
-                {
-                    case TimeBeforeClass.FifteenMinutes:
-                        user.Settings.TimeBeforeClassToNotify = TimeBeforeClass.ThirtyMinutes;
-                        break;
-
-                    case TimeBeforeClass.ThirtyMinutes:
-                        user.Settings.TimeBeforeClassToNotify = TimeBeforeClass.OneHour;
-                        break;
-
-                    case TimeBeforeClass.OneHour:
-                        user.Settings.TimeBeforeClassToNotify = TimeBeforeClass.FifteenMinutes;
-                        break;
-                }
+                var values = Enum.GetValues<TimeBeforeClass>();
+                var index = Array.IndexOf(values, user.Settings.TimeBeforeClassToNotify);
+                user.Settings.TimeBeforeClassToNotify = values[(index + 1) % values.Length];
 
                 await _messageService.EditMessage(
                     chatId: chatId,

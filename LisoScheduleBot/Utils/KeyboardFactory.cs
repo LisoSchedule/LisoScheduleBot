@@ -1,7 +1,7 @@
-﻿using LisoScheduleBot.Models;
-using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types.ReplyMarkups;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Models;
+using System.Threading.Tasks;
 
 namespace LisoScheduleBot.Utils;
 
@@ -27,6 +27,7 @@ public static class KeyboardFactory
                 InlineButton($"{Emoji.ThumbsUp} Так", "registration:yes"),
                 InlineButton($"{Emoji.ThumbsDown} Пізніше", "registration:later")
             },
+
             new[] { InlineButton($"{firstName}", $"registration:nickname:{firstName}") }
         };
 
@@ -38,19 +39,19 @@ public static class KeyboardFactory
         return new InlineKeyboardMarkup(buttons);
     }
 
-    public static InlineKeyboardMarkup GroupsList(List<Group> groups)
+    public static InlineKeyboardMarkup GroupsList(List<Group> groups, string callback)
     {
         var buttons = groups
-            .Select(group => InlineButton(EnumConverter<GroupName>.EnumToString(group.Name!), $"registration:group_name:{group.Name}"))
+            .Select(g => InlineButton(EnumConverter<GroupName>.EnumToString(g.Name!), $"{callback}:group_name:{g.Name}"))
             .ToArray();
 
         return new InlineKeyboardMarkup(buttons);
     }
 
-    public static InlineKeyboardMarkup SubGroupsList(List<Group> groups)
+    public static InlineKeyboardMarkup SubGroupsList(List<Group> groups, string callback)
     {
         var buttons = groups
-            .Select(group => InlineButton(group.SubGroup.ToString(), $"registration:group_id:{group.GroupId}"))
+            .Select(g => InlineButton(g.SubGroup.ToString(), $"{callback}:group_id:{g.GroupId}"))
             .ToArray();
 
         return new InlineKeyboardMarkup(buttons);
@@ -70,23 +71,24 @@ public static class KeyboardFactory
 
     public static InlineKeyboardMarkup Settings(UserSettings settings)
     {
-        var notifications = settings.ReceiveNotifications ? Emoji.GreenCircle : Emoji.RedCircle;
+        var emoji = settings.ReceiveNotifications ? Emoji.GreenCircle : Emoji.RedCircle;
         var buttons = new List<InlineKeyboardButton[]>
         {
-            new[] { InlineButton($"{Emoji.Pen} Нікнейм", "settings:nickname") }
+            new[] { InlineButton($"{Emoji.Pen} Нікнейм", "settings:nickname") },
+            new[] { InlineButton($"{Emoji.Silhoutte} Група", "settings:group") }
         };
 
         if (settings.ReceiveNotifications)
         {
             buttons.Add(new[]
             {
-                InlineButton($"{notifications} Сповіщення", "settings:notifications"),
+                InlineButton($"{emoji} Сповіщення", "settings:notifications"),
                 InlineButton($"{Emoji.Clock} {(int)settings.TimeBeforeClassToNotify} хв. до Пари", "settings:time_before_class") 
             });
         }
         else
         {
-            buttons.Add(new[] { InlineButton($"{notifications} Сповіщення", "settings:notifications") });
+            buttons.Add(new[] { InlineButton($"{emoji} Сповіщення", "settings:notifications") });
         }
 
         buttons.Add(new[] { InlineButton($"{Emoji.TrashCan} Профіль", "settings:profile") });
@@ -95,15 +97,17 @@ public static class KeyboardFactory
         return new InlineKeyboardMarkup(buttons);
     }
 
-    public static InlineKeyboardMarkup YesLater()
+    public static InlineKeyboardMarkup YesLater(string callback)
     {
         return new InlineKeyboardMarkup(new[]
         {
             new[]
             {
-                InlineButton($"{Emoji.ThumbsUp} Так", "settings:yes"),
-                InlineButton($"{Emoji.ThumbsDown} Пізніше", "settings:later")
-            }
+                InlineButton($"{Emoji.ThumbsUp} Так", $"settings:{callback}_yes"),
+                InlineButton($"{Emoji.ThumbsDown} Пізніше", $"settings:{callback}_later")
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") }
         });
     }
 
@@ -115,7 +119,9 @@ public static class KeyboardFactory
             {
                 InlineButton($"{Emoji.TrashCan} Видалити", "settings:remove"),
                 InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
-            }
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") }
         });
     }
 
@@ -139,7 +145,10 @@ public static class KeyboardFactory
     {
         return new InlineKeyboardMarkup(new[]
         {
-            new[] { InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back") }
+            new[] { 
+                InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
+                InlineButton($"{Emoji.House} Головне Меню", "schedule:main_menu")
+            }
         });
     }
 
@@ -161,7 +170,9 @@ public static class KeyboardFactory
             { 
                 InlineButton($"{Emoji.ArrowLeft} Назад", $"schedule:{callback}"),
                 InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back")
-            }
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "schedule:main_menu") }
         });
     }
 
@@ -188,20 +199,25 @@ public static class KeyboardFactory
                 InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
                 InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
             },
+
             new[]
             {
                 InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
                 InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
             },
+
             new[]
             {
                 InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
             },
+
             new[]
             {
                 InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
                 InlineButton($"Далі {Emoji.ArrowRight}", "schedule:next")
-            }
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "schedule:main_menu") }
         };
 
         return new InlineKeyboardMarkup(buttons);
@@ -230,23 +246,36 @@ public static class KeyboardFactory
                 InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
                 InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
             },
+
             new[]
             {
                 InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
                 InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
             },
+
             new[]
             {
                 InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
             },
+
             new[]
             {
                 InlineButton($"{Emoji.ArrowLeft} Назад", "schedule:previous"),
                 InlineButton($"{Emoji.OpenBook} Розклад", "schedule:back"),
-            }
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "schedule:main_menu") }
         };
 
         return new InlineKeyboardMarkup(buttons);
+    }
+
+    public static InlineKeyboardMarkup OpenSettings()
+    {
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[] { InlineButton($"{Emoji.Gear} Налаштування", "schedule:settings") }
+        });
     }
 
     private static InlineKeyboardButton InlineButton(string text, string callbackData)

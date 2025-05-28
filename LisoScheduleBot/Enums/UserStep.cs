@@ -27,5 +27,8 @@ public enum UserStep
     ChangeSettings,
     ChangeNickname,
     ChangingNickname,
+    ChangeGroup,
+    ChangingGroup,
+    ChangingSubGroup,
     RemoveProfile
 }
