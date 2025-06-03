@@ -196,19 +196,19 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
-                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2).ToString("dd.MM.yy")}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]
             {
-                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
-                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2).ToString("dd.MM.yy")}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]
             {
-                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]
@@ -243,19 +243,19 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
-                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2).ToString("dd.MM.yy")}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]
             {
-                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
-                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2).ToString("dd.MM.yy")}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]
             {
-                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2).ToString("dd.MM.yy")}")
             },
 
             new[]

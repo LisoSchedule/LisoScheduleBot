@@ -1,5 +1,6 @@
 using Telegram.Bot;
 using Hangfire;
+using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.MemoryStorage;
 using LisoScheduleBot.Config;
 using LisoScheduleBot.Dispatchers;
@@ -40,6 +41,9 @@ public class Startup
 
         // Telegram Bot Client
         services.AddSingleton<ITelegramBotClient>(sp => new TelegramBotClient(appConfig.BotToken));
+
+        // Controllers
+        services.AddControllers();
 
         // Dispatchers
         services.AddSingleton<CallbackDispatcher>();
@@ -107,7 +111,30 @@ public class Startup
         var hangfireService = app.Services.GetRequiredService<HangfireService>();
         await hangfireService.RegisterJobs();
 
-        app.UseHangfireDashboard();
+        var appConfig = app.Services.GetRequiredService<AppConfig>();
+
+        app.UseHangfireDashboard("/hangfire", new DashboardOptions
+        {
+            Authorization = new[]
+            {
+                new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+                {
+                    RequireSsl = false,
+                    SslRedirect = false,
+                    LoginCaseSensitive = true,
+                    Users = new[]
+                    {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = "admin",
+                            PasswordClear = appConfig.HangfirePassword
+                        }
+                    }
+                })
+            }
+        });
+
+        app.MapControllers();
         app.MapGet("/", () => "Bot is running...");
     }
 }

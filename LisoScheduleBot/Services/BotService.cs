@@ -1,35 +1,35 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
-using LisoScheduleBot.Handlers;
+using LisoScheduleBot.Config;
 
 namespace LisoScheduleBot.Services;
 
-public class BotService : BackgroundService
+public class BotService : IHostedService
 {
     private readonly ITelegramBotClient _botClient;
-    private readonly BotUpdateHandler _updateHandler;
     private readonly ILogger<BotService> _logger;
+    private readonly string _webhookUrl;
 
-    public BotService(ITelegramBotClient botClient, BotUpdateHandler updateHandler, ILogger<BotService> logger)
+    public BotService(ITelegramBotClient botClient, AppConfig config, ILogger<BotService> logger)
     {
         _botClient = botClient;
-        _updateHandler = updateHandler;
         _logger = logger;
+        _webhookUrl = config.WebhookUrl;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken ct)
+    public async Task StartAsync(CancellationToken ct)
     {
         var me = await _botClient.GetMe(ct);
-        Console.Clear();
         _logger.LogInformation("{Username} has started working.", me.Username);
 
         await SetBotCommands();
+        await SetBotWebhook();
+    }
 
-        await _botClient.ReceiveAsync(
-            updateHandler: _updateHandler.HandleUpdate,
-            errorHandler: _updateHandler.HandleError,
-            cancellationToken: ct
-        );
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await _botClient.DeleteWebhook(cancellationToken: cancellationToken);
+        _logger.LogInformation("Webhook deleted.");
     }
 
     private async Task SetBotCommands()
@@ -40,5 +40,11 @@ public class BotService : BackgroundService
         };
 
         await _botClient.SetMyCommands(commands);
+    }
+
+    private async Task SetBotWebhook()
+    {
+        await _botClient.SetWebhook(_webhookUrl);
+        _logger.LogInformation("Webhook set to {WebhookUrl}.", _webhookUrl);
     }
 }

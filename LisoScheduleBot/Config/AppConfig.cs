@@ -5,6 +5,9 @@ namespace LisoScheduleBot.Config;
 public class AppConfig
 {
     public string BotToken { get; }
+    public string WebhookUrl { get; }
+    public string HangfirePassword { get; }
+    public string HangfireTimezone { get; }
     public string ClassroomsJson { get; }
     public string GroupsJson { get; }
     public string LessonRecurrencesJson { get; }
@@ -20,6 +23,14 @@ public class AppConfig
 
         BotToken = Env.GetString(EnvKeys.BOT_TOKEN.ToString()) ?? 
             throw new InvalidDataException("BOT_TOKEN is null.");
+
+        WebhookUrl = Env.GetString(EnvKeys.WEBHOOK_URL.ToString()) ??
+            throw new InvalidDataException("WEBHOOK_URL is null.");
+
+        HangfirePassword = Env.GetString(EnvKeys.HANGFIRE_PASSWORD.ToString()) ??
+            throw new InvalidDataException("HANGFIRE_PASSWORD is null.");
+
+        HangfireTimezone = Env.GetString(EnvKeys.HANGFIRE_TIMEZONE.ToString()) ?? TimeZoneInfo.Utc.StandardName;
 
         ClassroomsJson = Path.Combine(AppContext.BaseDirectory, Env.GetString(EnvKeys.CLASSROOMS_JSON.ToString())) ??
             throw new InvalidDataException("CLASSROOMS_JSON is null.");
