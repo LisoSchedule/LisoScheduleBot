@@ -1,5 +1,6 @@
 using Hangfire;
 using Hangfire.Storage;
+using LisoScheduleBot.Config;
 using LisoScheduleBot.Enums;
 using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
@@ -11,14 +12,17 @@ public class HangfireService
     private readonly IService<Lesson> _lessonService;
     private readonly INotificationService _notificationService;
     private readonly IRecurringJobManager _recurringJobManager;
+    private readonly string _timezone;
 
     public HangfireService(IService<Lesson> lessonService,
         INotificationService notificationService,
-        IRecurringJobManager recurringJobManager)
+        IRecurringJobManager recurringJobManager,
+        AppConfig config)
     {
         _lessonService = lessonService;
         _notificationService = notificationService;
         _recurringJobManager = recurringJobManager;
+        _timezone = config.HangfireTimezone ?? TimeZoneInfo.Utc.StandardName;
     }
 
     public async Task RegisterJobs()
@@ -36,7 +40,7 @@ public class HangfireService
 
             var options = new RecurringJobOptions
             {
-                TimeZone = TimeZoneInfo.Local
+                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timezone)
             };
 
             _recurringJobManager.AddOrUpdate(jobId, () => _notificationService.SendReminders(), cron, options);

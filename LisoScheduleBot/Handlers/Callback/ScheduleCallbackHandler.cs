@@ -82,7 +82,7 @@ public class ScheduleCallbackHandler : ICallbackHandler
 
             case "date":
                 var date = callbackData[2];
-                scheduleItems = await _scheduleService.GetScheduleItemsByDate(DateOnly.Parse(date), user);
+                scheduleItems = await _scheduleService.GetScheduleItemsByDate(DateOnly.ParseExact(date, "dd.MM.yy"), user);
 
                 foreach (var item in scheduleItems)
                 {
@@ -94,7 +94,7 @@ public class ScheduleCallbackHandler : ICallbackHandler
                         $"{Emoji.ThreeOClock} *Кінець*: {item.StartTime.AddMinutes(item.Duration):HH:mm}\n\n";
                 }
 
-                text = $"{Emoji.Date} *Розклад* на {date:dd.MM.yy}";
+                text = $"{Emoji.Date} *Розклад* на {date}";
                 text += scheduleItems.Count == 0
                     ? " відсутній."
                     : ":\n\n" + schedule;
@@ -103,7 +103,7 @@ public class ScheduleCallbackHandler : ICallbackHandler
                     chatId: chatId,
                     messageId: messageId,
                     text: text,
-                    replyMarkup: KeyboardFactory.DateBack(DateOnly.Parse(date)),
+                    replyMarkup: KeyboardFactory.DateBack(DateOnly.ParseExact(date, "dd.MM.yy")),
                     parseMode: ParseMode.Markdown
                 );
 
