@@ -18,6 +18,9 @@ public class User
     [JsonProperty("nickname")]
     public string? Nickname { get; set; }
 
+    [JsonProperty("email")]
+    public string? Email { get; set; }
+
     [JsonProperty("group_id")]
     public int GroupId { get; set; }
 

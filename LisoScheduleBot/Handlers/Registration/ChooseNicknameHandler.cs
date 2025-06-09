@@ -9,12 +9,10 @@ namespace LisoScheduleBot.Handlers.Registration;
 public class ChooseNicknameHandler : IUserStepHandler
 {
     private readonly IMessageService _messageService;
-    private readonly IUserService _userService;
 
-    public ChooseNicknameHandler(IMessageService messageService, IUserService userService)
+    public ChooseNicknameHandler(IMessageService messageService)
     {
         _messageService = messageService;
-        _userService = userService;
     }
 
     public UserStep Step => UserStep.ChooseNickname;
@@ -33,7 +31,7 @@ public class ChooseNicknameHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.Pen} ЅажаЇш задати н≥кнейм?",
+            text: $"{Emoji.Pen} ЅажаЇш вказати н≥кнейм?",
             replyMarkup: KeyboardFactory.YesLaterNicknames(firstName, username)
         );
     }

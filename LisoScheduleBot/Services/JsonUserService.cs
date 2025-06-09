@@ -46,6 +46,7 @@ public class JsonUserService : IUserService
             ChatId = chatId,
             Username = username,
             Nickname = string.Empty,
+            Email = string.Empty,
             GroupId = -1,
             Step = UserStep.ChooseNickname,
             CreatedAt = DateTime.UtcNow,

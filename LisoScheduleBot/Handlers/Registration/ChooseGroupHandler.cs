@@ -10,13 +10,11 @@ public class ChooseGroupHandler : IUserStepHandler
 {
     private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
-    private readonly IUserService _userService;
 
-    public ChooseGroupHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public ChooseGroupHandler(IGroupService groupService, IMessageService messageService)
     {
         _groupService = groupService;
         _messageService = messageService;
-        _userService = userService;
     }
 
     public UserStep Step => UserStep.ChooseGroup;

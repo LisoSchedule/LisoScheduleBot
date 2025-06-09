@@ -25,7 +25,7 @@ public class ChoosingNicknameHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n" +
+            text: $"{Emoji.CheckMark} Чудово, нікнейм вказано.\n" +
                 $"{Emoji.Gear} Ти зможеш змінити його у налаштуваннях.\n\n" +
                 $"{Emoji.Silhoutte} Обери свою групу.",
             replyMarkup: KeyboardFactory.GroupsList(await _groupService.GetUniqueGroups(), "registration")

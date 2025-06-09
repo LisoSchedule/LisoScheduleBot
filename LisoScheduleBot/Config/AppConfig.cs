@@ -5,7 +5,11 @@ namespace LisoScheduleBot.Config;
 public class AppConfig
 {
     public string BotToken { get; }
+    public string AppPassword { get; }
+    public string HangfirePassword { get; }
+    public string HangfireTimezone { get; }
     public string ClassroomsJson { get; }
+    public string CodesJson { get; }
     public string GroupsJson { get; }
     public string LessonRecurrencesJson { get; }
     public string LessonsJson { get; }
@@ -21,8 +25,19 @@ public class AppConfig
         BotToken = Env.GetString(EnvKeys.BOT_TOKEN.ToString()) ?? 
             throw new InvalidDataException("BOT_TOKEN is null.");
 
+        AppPassword = Env.GetString(EnvKeys.APP_PASSWORD.ToString()) ??
+            throw new InvalidDataException("APP_PASSWORD is null.");
+
+        HangfirePassword = Env.GetString("HANGFIRE_PASSWORD") ??
+            throw new InvalidDataException("HANGFIRE_PASSWORD is null.");
+
+        HangfireTimezone = Env.GetString("HANGFIRE_TIMEZONE");
+
         ClassroomsJson = Path.Combine(AppContext.BaseDirectory, Env.GetString(EnvKeys.CLASSROOMS_JSON.ToString())) ??
             throw new InvalidDataException("CLASSROOMS_JSON is null.");
+
+        CodesJson = Path.Combine(AppContext.BaseDirectory, Env.GetString(EnvKeys.CODES_JSON.ToString())) ??
+            throw new InvalidDataException("CODES_JSON is null.");
 
         GroupsJson = Path.Combine(AppContext.BaseDirectory, Env.GetString(EnvKeys.GROUPS_JSON.ToString())) ?? 
             throw new InvalidDataException("GROUPS_JSON is null.");

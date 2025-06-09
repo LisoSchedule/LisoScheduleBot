@@ -1,5 +1,6 @@
 using Telegram.Bot;
 using Hangfire;
+using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.MemoryStorage;
 using LisoScheduleBot.Config;
 using LisoScheduleBot.Dispatchers;
@@ -56,13 +57,17 @@ public class Startup
         services.AddSingleton<IUserStepHandler, ChooseSubGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChoosingNicknameHandler>();
         services.AddSingleton<IUserStepHandler, StartOverHandler>();
+        services.AddSingleton<IUserStepHandler, ChangeEmailHandler>();
         services.AddSingleton<IUserStepHandler, ChangeNicknameHandler>();
         services.AddSingleton<IUserStepHandler, ChangeGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangeSettingsHandler>();
+        services.AddSingleton<IUserStepHandler, ChangingEmailHandler>();
         services.AddSingleton<IUserStepHandler, ChangingGroupHandler>();
         services.AddSingleton<IUserStepHandler, ChangingNicknameHandler>();
         services.AddSingleton<IUserStepHandler, ChangingSubGroupHandler>();
         services.AddSingleton<IUserStepHandler, RemoveProfileHandler>();
+        services.AddSingleton<IUserStepHandler, VerifyEmailHandler>();
+        services.AddSingleton<IUserStepHandler, VerifyingEmailHandler>();
         services.AddSingleton<IUserStepHandler, ChooseScheduleHandler>();
         services.AddSingleton<IUserStepHandler, ScheduleDateHandler>();
         services.AddSingleton<IUserStepHandler, ScheduleNextWeekHandler>();
@@ -74,6 +79,7 @@ public class Startup
 
         // Repositories
         services.AddSingleton<JsonClassroomRepository>();
+        services.AddSingleton<JsonCodeRepository>();
         services.AddSingleton<JsonGroupRepository>();
         services.AddSingleton<JsonLessonRecurrenceRepository>();
         services.AddSingleton<JsonLessonRepository>();
@@ -84,7 +90,9 @@ public class Startup
 
         // Services
         services.AddHostedService<BotService>();
+        services.AddSingleton<IEmailService, EmailService>();
         services.AddSingleton<IService<Classroom>, JsonClassroomService>();
+        services.AddSingletonWithInterfaces<JsonCodeService, IService<VerificationCode>, ICodeService>();
         services.AddSingletonWithInterfaces<JsonGroupService, IService<Group>, IGroupService>();
         services.AddSingleton<IService<LessonRecurrence>, JsonLessonRecurrenceService>();
         services.AddSingleton<IService<Lesson>, JsonLessonService>();
@@ -107,7 +115,29 @@ public class Startup
         var hangfireService = app.Services.GetRequiredService<HangfireService>();
         await hangfireService.RegisterJobs();
 
-        app.UseHangfireDashboard();
+        var config = app.Services.GetRequiredService<AppConfig>();
+
+        app.UseHangfireDashboard("/hangfire", new DashboardOptions
+        {
+            Authorization = new[] 
+            { 
+                new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+                {
+                    RequireSsl = false,
+                    SslRedirect = false,
+                    LoginCaseSensitive = true,
+                    Users = new[]
+                    {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = "admin",
+                            PasswordClear = config.HangfirePassword
+                        }
+                    }
+                })  
+            }
+        });
+
         app.MapGet("/", () => "Bot is running...");
     }
 }

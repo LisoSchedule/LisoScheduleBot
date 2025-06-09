@@ -75,6 +75,7 @@ public static class KeyboardFactory
         var buttons = new List<InlineKeyboardButton[]>
         {
             new[] { InlineButton($"{Emoji.Pen} Нікнейм", "settings:nickname") },
+            new[] { InlineButton($"{Emoji.Email} Email", "settings:email") },
             new[] { InlineButton($"{Emoji.Silhoutte} Група", "settings:group") }
         };
 
@@ -111,13 +112,27 @@ public static class KeyboardFactory
         });
     }
 
-    public static InlineKeyboardMarkup RemoveCancel()
+    public static InlineKeyboardMarkup RemoveCancel(string callback)
     {
         return new InlineKeyboardMarkup(new[]
         {
             new[]
             {
-                InlineButton($"{Emoji.TrashCan} Видалити", "settings:remove"),
+                InlineButton($"{Emoji.TrashCan} Видалити", $"settings:{callback}_remove"),
+                InlineButton($"{Emoji.CrossMark} Скасувати", $"settings:{callback}_cancel")
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") }
+        });
+    }
+
+    public static InlineKeyboardMarkup InputCancel()
+    {
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[]
+            {
+                InlineButton($"{Emoji.Key} Ввести", "settings:code_input"),
                 InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
             },
 
@@ -196,19 +211,19 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
-                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2):dd.MM.yy}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2):dd.MM.yy}")
             },
 
             new[]
             {
-                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
-                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2):dd.MM.yy}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2):dd.MM.yy}")
             },
 
             new[]
             {
-                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2):dd.MM.yy}")
             },
 
             new[]
@@ -243,19 +258,19 @@ public static class KeyboardFactory
         {
             new[]
             {
-                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2)}"),
-                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2)}")
+                InlineButton(days[0].Item1, $"schedule:date:{monday.AddDays(days[0].Item2):dd.MM.yy}"),
+                InlineButton(days[1].Item1, $"schedule:date:{monday.AddDays(days[1].Item2):dd.MM.yy}")
             },
 
             new[]
             {
-                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2)}"),
-                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2)}")
+                InlineButton(days[2].Item1, $"schedule:date:{monday.AddDays(days[2].Item2):dd.MM.yy}"),
+                InlineButton(days[3].Item1, $"schedule:date:{monday.AddDays(days[3].Item2):dd.MM.yy}")
             },
 
             new[]
             {
-                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2)}")
+                InlineButton(days[4].Item1, $"schedule:date:{monday.AddDays(days[4].Item2):dd.MM.yy}")
             },
 
             new[]

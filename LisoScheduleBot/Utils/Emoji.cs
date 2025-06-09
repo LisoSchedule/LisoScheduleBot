@@ -33,4 +33,7 @@ public static class Emoji
     public static string ClosedBook { get; } = "\U0001F4D9";
     public static string Hourglass { get; } = "\U000023F3";
     public static string Warning { get; } = "\U000026A0";
+    public static string Email { get; } = "\U0001F4E7";
+    public static string Key { get; } = "\U0001F511";
+    public static string LockWithKey { get; } = "\U0001F510";
 }
