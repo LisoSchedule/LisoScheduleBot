@@ -40,7 +40,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                     text: user.Nickname == string.Empty
                         ? $"{Emoji.Pen} Бажаєш вказати нікнейм?"
                         : $"{Emoji.Silhoutte} Поточний нікнейм: *{user.Nickname}*\n\n" +
-                        $"{Emoji.Pen} Бажаєш змінити нікнейм?",
+                        $"{Emoji.Refresh} Бажаєш змінити нікнейм?",
                     replyMarkup: KeyboardFactory.YesLater("nickname"),
                     parseMode: ParseMode.Markdown
                 );
