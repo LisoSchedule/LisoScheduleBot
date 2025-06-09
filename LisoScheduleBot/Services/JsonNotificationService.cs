@@ -60,11 +60,14 @@ public class JsonNotificationService : INotificationService
                     parseMode: ParseMode.Html
                 );
 
-                await _emailService.SendMessage(
-                    email: user.Email!,
-                    subject: "Нагадування про пару",
-                    body: text
-                );
+                if (!string.IsNullOrEmpty(user.Email))
+                {
+                    await _emailService.SendMessage(
+                        email: user.Email!,
+                        subject: $"{Emoji.Clock} Нагадування про пару",
+                        body: text.Replace("\n", "<br>")
+                    );
+                }
             }
         }
     }

@@ -21,7 +21,7 @@ public class VerifyEmailHandler : IUserStepHandler
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.Lock} Верифікаційний код відправлено на введений Email.",
+            text: $"{Emoji.LockWithKey} Верифікаційний код відправлено на введений Email.",
             replyMarkup: KeyboardFactory.InputCancel()
         );
     }

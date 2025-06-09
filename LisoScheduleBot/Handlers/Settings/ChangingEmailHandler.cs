@@ -34,7 +34,7 @@ public class ChangingEmailHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.Lock} Верифікаційний код відправлено на введений Email.",
+            text: $"{Emoji.LockWithKey} Верифікаційний код відправлено на введений Email.",
             replyMarkup: KeyboardFactory.InputCancel()
         );
 
@@ -46,7 +46,7 @@ public class ChangingEmailHandler : IUserStepHandler
         await _codeService.SaveEntity(code);
         await _emailService.SendMessage(
             email: email!,
-            subject: "Код Підтвердження",
+            subject: $"{Emoji.LockWithKey} Верифікаційний код",
             body: $"{Emoji.Key} Код: <strong>{code.Code}</strong>"
         );
     }
