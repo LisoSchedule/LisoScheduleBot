@@ -25,7 +25,7 @@ public class ChangingNicknameHandler : IUserStepHandler
 
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.CheckMark} Чудово, нікнейм задано.\n\n" +
+            text: $"{Emoji.CheckMark} Чудово, нікнейм вказано.\n\n" +
                 $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
             replyMarkup: KeyboardFactory.Settings(user.Settings)
         );

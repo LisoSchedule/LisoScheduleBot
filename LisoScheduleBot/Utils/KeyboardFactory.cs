@@ -75,6 +75,7 @@ public static class KeyboardFactory
         var buttons = new List<InlineKeyboardButton[]>
         {
             new[] { InlineButton($"{Emoji.Pen} Нікнейм", "settings:nickname") },
+            new[] { InlineButton($"{Emoji.Email} Email", "settings:email") },
             new[] { InlineButton($"{Emoji.Silhoutte} Група", "settings:group") }
         };
 
@@ -111,13 +112,27 @@ public static class KeyboardFactory
         });
     }
 
-    public static InlineKeyboardMarkup RemoveCancel()
+    public static InlineKeyboardMarkup RemoveCancel(string callback)
     {
         return new InlineKeyboardMarkup(new[]
         {
             new[]
             {
-                InlineButton($"{Emoji.TrashCan} Видалити", "settings:remove"),
+                InlineButton($"{Emoji.TrashCan} Видалити", $"settings:{callback}_remove"),
+                InlineButton($"{Emoji.CrossMark} Скасувати", $"settings:{callback}_cancel")
+            },
+
+            new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") }
+        });
+    }
+
+    public static InlineKeyboardMarkup InputCancel()
+    {
+        return new InlineKeyboardMarkup(new[]
+        {
+            new[]
+            {
+                InlineButton($"{Emoji.Pen} Ввести", "settings:code_input"),
                 InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
             },
 

@@ -1,0 +1,13 @@
+[
+  {
+    "lesson_id": 1,
+    "classroom_id": 11,
+    "teacher_id": 11,
+    "group_id": 1,
+    "subject_id": 1,
+    "duration": 95,
+    "start_time": "10:20",
+    "created_at": "2025-04-16T00:00:00Z",
+    "updated_at": "2025-04-16T00:00:00Z"
+  }
+]

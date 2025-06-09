@@ -1,8 +1,9 @@
 [
   {
-    "teacher_id": 1,
-    "full_name": "Salo Oleh",
-    "position": "SeniorLecturer",
+    "code_id": 1,
+    "user_id": 1,
+    "code": "L-684364",
+    "is_used": false,
     "created_at": "2025-04-16T00:00:00Z",
     "updated_at": "2025-04-16T00:00:00Z"
   }

@@ -6,23 +6,23 @@ using User = LisoScheduleBot.Models.User;
 
 namespace LisoScheduleBot.Handlers.Settings;
 
-public class RemoveProfileHandler : IUserStepHandler
+public class VerifyEmailHandler : IUserStepHandler
 {
     private readonly IMessageService _messageService;
 
-    public RemoveProfileHandler(IMessageService messageService)
+    public VerifyEmailHandler(IMessageService messageService)
     {
         _messageService = messageService;
     }
 
-    public UserStep Step => UserStep.RemoveProfile;
+    public UserStep Step => UserStep.VerifyEmail;
 
     public async Task Handle(Message message, User user)
     {
         await _messageService.SendMessage(
             chatId: user.ChatId,
-            text: $"{Emoji.PersonWithTrash} Бажаєш видалити профіль?",
-            replyMarkup: KeyboardFactory.RemoveCancel("profile")
+            text: $"{Emoji.Lock} Верифікаційний код відправлено на введений Email.",
+            replyMarkup: KeyboardFactory.InputCancel()
         );
     }
 }

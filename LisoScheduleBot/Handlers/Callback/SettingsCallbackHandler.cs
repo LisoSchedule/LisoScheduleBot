@@ -38,7 +38,7 @@ public class SettingsCallbackHandler : ICallbackHandler
                     chatId: user.ChatId,
                     messageId: messageId,
                     text: user.Nickname == string.Empty
-                        ? $"{Emoji.Pen} Бажаєш задати нікнейм?"
+                        ? $"{Emoji.Pen} Бажаєш вказати нікнейм?"
                         : $"{Emoji.Silhoutte} Поточний нікнейм: *{user.Nickname}*\n\n" +
                         $"{Emoji.Pen} Бажаєш змінити нікнейм?",
                     replyMarkup: KeyboardFactory.YesLater("nickname"),
@@ -49,27 +49,21 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _userService.SaveUser(user);
                 break;
 
-            case "nickname_yes":
+            case "email":
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
-                    text: $"{Emoji.WritingHand} Введи бажаний нікнейм."
+                    text: user.Email == string.Empty
+                        ? $"{Emoji.Pen} Бажаєш вказати Email?"
+                        : $"{Emoji.Email} Поточний Email: *{user.Email}*\n\n" +
+                        $"{Emoji.PersonWithTrash} Бажаєш видалити Email?",
+                    replyMarkup: user.Email == string.Empty 
+                        ? KeyboardFactory.YesLater("email")
+                        : KeyboardFactory.RemoveCancel("email"),
+                    parseMode: ParseMode.Markdown
                 );
 
-                user.Step = UserStep.ChangingNickname;
-                await _userService.SaveUser(user);
-                break;
-
-            case "nickname_later":
-            case "group_later":
-                await _messageService.EditMessage(
-                    chatId: chatId,
-                    messageId: messageId,
-                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
-                    replyMarkup: KeyboardFactory.Settings(user.Settings)
-                );
-
-                user.Step = UserStep.ChangeSettings;
+                user.Step = UserStep.ChangeEmail;
                 await _userService.SaveUser(user);
                 break;
 
@@ -89,6 +83,29 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _userService.SaveUser(user);
                 break;
 
+            case "nickname_yes":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.WritingHand} Введи бажаний нікнейм."
+                );
+
+                user.Step = UserStep.ChangingNickname;
+                await _userService.SaveUser(user);
+                break;
+
+            case "email_yes":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.WritingHand} Введи бажаний Email."
+                );
+
+                user.Step = UserStep.ChangingEmail;
+                await _userService.SaveUser(user);
+                
+                break;
+
             case "group_yes":
                 await _messageService.EditMessage(
                     chatId: chatId,
@@ -98,6 +115,31 @@ public class SettingsCallbackHandler : ICallbackHandler
                 );
 
                 user.Step = UserStep.ChangingGroup;
+                await _userService.SaveUser(user);
+                break;
+
+            case "nickname_later":
+            case "email_later":
+            case "group_later":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.PhoneWithArrow} Обирай, що забажаєш.",
+                    replyMarkup: KeyboardFactory.Settings(user.Settings)
+                );
+
+                user.Step = UserStep.ChangeSettings;
+                await _userService.SaveUser(user);
+                break;
+
+            case "code_input":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.WritingHand} Введи верифікаційний код."
+                );
+
+                user.Step = UserStep.VerifyingEmail;
                 await _userService.SaveUser(user);
                 break;
 
@@ -165,14 +207,28 @@ public class SettingsCallbackHandler : ICallbackHandler
                     chatId: chatId,
                     messageId: messageId,
                     text: $"{Emoji.PersonWithTrash} Бажаєш видалити профіль?",
-                    replyMarkup: KeyboardFactory.RemoveCancel()
+                    replyMarkup: KeyboardFactory.RemoveCancel("profile")
                 );
 
                 user.Step = UserStep.RemoveProfile;
                 await _userService.SaveUser(user);
                 break;
 
-            case "remove":
+            case "email_remove":
+                await _messageService.EditMessage(
+                    chatId: chatId,
+                    messageId: messageId,
+                    text: $"{Emoji.CheckMark} Email успішно видалено.\n\n" +
+                    $"{Emoji.Pen} Обирай, що забажаєш.",
+                    replyMarkup: KeyboardFactory.Settings(user.Settings)
+                );
+
+                user.Email = string.Empty;
+                user.Step = UserStep.ChangeSettings;
+                await _userService.SaveUser(user);
+                break;
+
+            case "profile_remove":
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
@@ -182,7 +238,8 @@ public class SettingsCallbackHandler : ICallbackHandler
                 await _userService.RemoveUser(user);
                 break;
 
-            case "cancel":
+            case "email_cancel":
+            case "profile_cancel":
                 await _messageService.EditMessage(
                     chatId: chatId,
                     messageId: messageId,
@@ -190,6 +247,8 @@ public class SettingsCallbackHandler : ICallbackHandler
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
                 
+                if (user.Step == UserStep.VerifyEmail) user.Email = string.Empty;
+
                 user.Step = UserStep.ChangeSettings;
                 await _userService.SaveUser(user);
                 break;
