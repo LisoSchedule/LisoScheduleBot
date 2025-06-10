@@ -133,7 +133,7 @@ public static class KeyboardFactory
             new[]
             {
                 InlineButton($"{Emoji.Key} Ввести", "settings:code_input"),
-                InlineButton($"{Emoji.CrossMark} Скасувати", "settings:cancel")
+                InlineButton($"{Emoji.CrossMark} Скасувати", "settings:email_cancel")
             },
 
             new[] { InlineButton($"{Emoji.House} Головне Меню", "settings:main_menu") }

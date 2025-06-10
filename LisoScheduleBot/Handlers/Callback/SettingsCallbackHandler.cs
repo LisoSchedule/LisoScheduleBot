@@ -5,6 +5,7 @@ using LisoScheduleBot.Interfaces;
 using LisoScheduleBot.Models;
 using LisoScheduleBot.Utils;
 using User = LisoScheduleBot.Models.User;
+using LisoScheduleBot.Services;
 
 namespace LisoScheduleBot.Handlers.Callback;
 
@@ -13,12 +14,18 @@ public class SettingsCallbackHandler : ICallbackHandler
     private readonly IGroupService _groupService;
     private readonly IMessageService _messageService;
     private readonly IUserService _userService;
+    private readonly JsonCodeService _codeService;
 
-    public SettingsCallbackHandler(IGroupService groupService, IMessageService messageService, IUserService userService)
+    public SettingsCallbackHandler(
+        IGroupService groupService, 
+        IMessageService messageService,
+        IUserService userService,
+        JsonCodeService codeService)
     {
         _groupService = groupService;
         _messageService = messageService;
         _userService = userService;
+        _codeService = codeService;
     }
 
     public bool CanHandle(string callbackData) => callbackData.StartsWith("settings:");
@@ -246,8 +253,15 @@ public class SettingsCallbackHandler : ICallbackHandler
                     text: $"{Emoji.PhoneWithArrow} ќбирай, що забажаЇш.",
                     replyMarkup: KeyboardFactory.Settings(user.Settings)
                 );
-                
-                if (user.Step == UserStep.VerifyEmail) user.Email = string.Empty;
+
+                if (user.Step == UserStep.VerifyEmail)
+                {
+                    var code = await _codeService.GetOrCreateLastCode(user.UserId);
+                    code.IsUsed = true;
+                    await _codeService.SaveEntity(code);
+
+                    user.Email = string.Empty;
+                }
 
                 user.Step = UserStep.ChangeSettings;
                 await _userService.SaveUser(user);
@@ -260,6 +274,15 @@ public class SettingsCallbackHandler : ICallbackHandler
                     text: $"{Emoji.PhoneWithArrow} ќбери потр≥бну д≥ю.",
                     replyMarkup: KeyboardFactory.MainMenu()
                 );
+
+                if (user.Step == UserStep.VerifyEmail)
+                {
+                    var code = await _codeService.GetOrCreateLastCode(user.UserId);
+                    code.IsUsed = true;
+                    await _codeService.SaveEntity(code);
+
+                    user.Email = string.Empty;
+                }
 
                 user.Step = UserStep.MainMenu;
                 await _userService.SaveUser(user);
